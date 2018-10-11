@@ -5,6 +5,14 @@
  */
 package stores.management;
 
+import com.mysql.jdbc.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author home
@@ -17,7 +25,111 @@ public class performance extends javax.swing.JFrame {
     public performance() {
         initComponents();
     }
-
+    
+    public int totalSales=0,totalRetail=0,rps=0,sps=0,gp=0;
+    public int totalSales() {
+        try {
+         Connection con = (Connection) DriverManager.getConnection("jdbc:mysql://localhost/customerinfo", "root", "");
+         Statement st = con.createStatement();
+         ResultSet rs,rs1;
+         String mysqlQuery = "SELECT `sellingprice` FROM cust_info";
+         String mysql = "SELECT `retailprice` FROM cust_info";
+//         String mysql = "SELECT SUM(sellingprice) FROM cust_info";
+         rs =st.executeQuery(mysqlQuery);
+         
+         while(rs.next()) {
+            totalSales += rs.getInt("sellingprice");
+            String s  = Integer.toString(totalSales);
+            sales.setText(s);
+         }
+     }catch(Exception e) {
+         System.out.println(e.getMessage());
+     }
+        return totalSales;
+    }
+    
+    public int totalRetail() {
+         totalRetail=0;
+        try {
+         Connection con = (Connection) DriverManager.getConnection("jdbc:mysql://localhost/customerinfo", "root", "");
+         Statement st = con.createStatement();
+         ResultSet rs,rs1;
+         String mysqlQuery = "SELECT `retailprice` FROM cust_info";
+         rs =st.executeQuery(mysqlQuery);
+         
+         while(rs.next()) {
+            totalRetail += rs.getInt("retailprice");
+            String s  = Integer.toString(totalRetail);
+            sold.setText(s);
+         }
+     }catch(Exception e) {
+         System.out.println(e.getMessage());
+     }
+        return totalRetail;
+    }
+    
+    public int grossprofit() {
+        int sales = totalSales;
+        int retail =totalRetail;
+        gp = sales-retail;
+        int x = Math.abs(gp);
+        String s = Integer.toString(x);
+        gprofit.setText(s);
+        return gp;
+        
+    }
+    
+    public int rps() {
+         rps=0;
+        try {
+         Connection con = (Connection) DriverManager.getConnection("jdbc:mysql://localhost/customerinfo", "root", "");
+         Statement st = con.createStatement();
+         ResultSet rs,rs1;
+         String mysqlQuery = "SELECT `retailpriceshipping` FROM cust_info";
+         rs =st.executeQuery(mysqlQuery);
+         
+         while(rs.next()) {
+            rps += rs.getInt("retailpriceshipping");
+            String s  = Integer.toString(rps);
+            
+         }
+     }catch(Exception e) {
+         System.out.println(e.getMessage());
+     }
+        return rps;
+    }
+    
+    
+        
+        public int sps() {
+             sps=0;
+        try {
+         Connection con = (Connection) DriverManager.getConnection("jdbc:mysql://localhost/customerinfo", "root", "");
+         Statement st = con.createStatement();
+         ResultSet rs,rs1;
+         String mysqlQuery = "SELECT `sellingpriceshipping` FROM cust_info";
+         rs =st.executeQuery(mysqlQuery);
+         
+         while(rs.next()) {
+            sps += rs.getInt("sellingpriceshipping");
+            String s  = Integer.toString(sps);
+            System.out.println("SPS VALUE:  " + sps);
+         }
+     }catch(Exception e) {
+         System.out.println(e.getMessage());
+     }
+        return sps;
+        }
+        
+        public void oe() {
+        int retailpriceshipping = rps;
+        int sellingpriceshipping =sps;
+        int oe = rps + sps;
+        int x = Math.abs(oe);
+        String s = Integer.toString(x);
+        exp.setText(s);
+        
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -27,21 +139,196 @@ public class performance extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        jPanel1 = new javax.swing.JPanel();
+        exp = new javax.swing.JTextField();
+        nprofit = new javax.swing.JTextField();
+        sales = new javax.swing.JTextField();
+        jLabel4 = new javax.swing.JLabel();
+        sold = new javax.swing.JTextField();
+        gprofit = new javax.swing.JTextField();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
+
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Performance");
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowOpened(java.awt.event.WindowEvent evt) {
+                formWindowOpened(evt);
+            }
+        });
+
+        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Performance"));
+
+        exp.setEditable(false);
+        exp.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                expActionPerformed(evt);
+            }
+        });
+
+        nprofit.setEditable(false);
+        nprofit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                nprofitActionPerformed(evt);
+            }
+        });
+
+        sales.setEditable(false);
+        sales.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                salesActionPerformed(evt);
+            }
+        });
+
+        jLabel4.setText("Other Expenses:");
+
+        sold.setEditable(false);
+        sold.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                soldActionPerformed(evt);
+            }
+        });
+
+        gprofit.setEditable(false);
+        gprofit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                gprofitActionPerformed(evt);
+            }
+        });
+
+        jLabel2.setText("Value Of Product Sold:");
+
+        jLabel3.setText("Gross Profit:");
+
+        jLabel5.setText("Net Profit:");
+
+        jLabel1.setText("Sales Revenue:");
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addGap(62, 62, 62)
+                        .addComponent(sales, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jLabel2)
+                                .addComponent(jLabel3))
+                            .addGap(29, 29, 29)
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addComponent(sold, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(gprofit, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGroup(jPanel1Layout.createSequentialGroup()
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jLabel4)
+                                .addComponent(jLabel5))
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(exp, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(nprofit, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                .addContainerGap())
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel1)
+                            .addComponent(sales, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(25, 25, 25)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(sold, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                .addGap(6, 6, 6)
+                                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(26, 26, 26)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel3)
+                            .addComponent(gprofit, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(50, 50, 50))
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(exp, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel4)))
+                .addGap(25, 25, 25)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel5)
+                    .addComponent(nprofit, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap())
+        );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(38, 38, 38)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(44, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(28, Short.MAX_VALUE)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(24, 24, 24))
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
+
+    private void salesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_salesActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_salesActionPerformed
+
+    private void soldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_soldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_soldActionPerformed
+
+    private void expActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_expActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_expActionPerformed
+
+    private void gprofitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_gprofitActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_gprofitActionPerformed
+
+    private void nprofitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nprofitActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_nprofitActionPerformed
+
+    private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
+     
+     totalSales();
+     totalRetail();
+     int GPPP = grossprofit();
+     int retailsp = rps();
+     int sellingsp = sps();
+     int otherExpenses = retailsp+sellingsp;
+     int gpp_abs = Math.abs(GPPP);
+     int oe_abs = Math.abs(otherExpenses);
+     int netProfit = gpp_abs-oe_abs;
+     int net_abs = Math.abs(netProfit);
+     
+     
+     String oee = Integer.toString(oe_abs);
+     String np = Integer.toString(net_abs);
+     
+     exp.setText(oee);
+     nprofit.setText(np);
+        
+    
+    }//GEN-LAST:event_formWindowOpened
 
     /**
      * @param args the command line arguments
@@ -54,7 +341,7 @@ public class performance extends javax.swing.JFrame {
          */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
+                if ("Metal".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
                 }
@@ -79,5 +366,16 @@ public class performance extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTextField exp;
+    private javax.swing.JTextField gprofit;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JTextField nprofit;
+    private javax.swing.JTextField sales;
+    private javax.swing.JTextField sold;
     // End of variables declaration//GEN-END:variables
 }

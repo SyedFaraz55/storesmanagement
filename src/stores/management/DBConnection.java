@@ -46,11 +46,14 @@ public class DBConnection {
      
  }
  
- public void addData(String id,String address,String pcode,String phone,String country,String email) {
+ public void addData(String id,String cname,String address,String pcode,String phone,String country,String email,String objectno,String astore,String ordern,String pfw,String sd,String ed, String door, int reprice, int rpps, int sellingp,
+ int ssps,int earning, String mopp, String pickdate, String dom, String dos, String paymentSts) {
      try {
          Connection conn = (Connection) DriverManager.getConnection(URI, USERNAME, PASSWORD);
          Statement st  = conn.createStatement();
-         String mysql = "INSERT INTO `customerinfo`.`custinfo` (`customer id`, `address`, `postal code`, `phone`, `country`, `email`) VALUES ('"+ id +"','"+ address +"','"+ pcode +"','"+ phone +"','"+ country +"','"+ email +"');";
+         String mysql = "INSERT INTO `customerinfo`.`cust_info` (`customer id`,`customer name`,`address`,`postal code`,`phone`,`country`,`email`,`object number`,`auctionstore`,`ordernumber`,`pfwa`,`startdate`,`enddate`,`dateoforder`,`retailprice`,`retailpriceshipping`,`sellingprice`,`sellingpriceshipping`,`earnings`,`methododpayment`,`pickdate`,`dosManufacuturer`,`dosCompany`,`status`) "
+                 + "VALUES ('"+ id +"','"+ cname +"','"+ address +"','"+ pcode +"','"+ phone +"','"+ country +"','"+ email +"','"+objectno+"','"+astore+"','"+ordern+"','"+pfw+"','"+sd+"','"+ed+"','"+door+"','"+reprice+"','"+rpps+"','"+sellingp+"'"
+                 + ",'"+ssps+"','"+earning+"','"+mopp+"','"+pickdate+"','"+dom+"','"+dos+"','"+paymentSts+"');";
          st.executeUpdate(mysql);
          JOptionPane.showMessageDialog(null,"Record Added !");
      } catch(Exception e) {
