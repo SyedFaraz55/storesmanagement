@@ -14,35 +14,28 @@ import javax.swing.JOptionPane;
  *
  * @author home
  */
-public class auctionstore extends javax.swing.JFrame {
+public class paymentmethod extends javax.swing.JFrame {
 
     /**
-     * Creates new form auctionstore
+     * Creates new form paymentmethod
      */
-    public auctionstore() {
+    public paymentmethod() {
         initComponents();
     }
     
-     public void AddStore() {
-              
-        String storeName = store_name.getText();
-        try {
+   public void AddMethod() {
+       String methodName = name.getText();
+       try {
             Connection con  = DriverManager.getConnection("jdbc:mysql://localhost/customerinfo", "root", "");
             Statement st = con.createStatement();
-            String sql = "INSERT INTO `auctionstore` (`auction store`) VALUES ('"+storeName+"');";
+            String sql = "INSERT INTO `paymentMethods` (`payment Methods`) VALUES ('"+methodName+"');";
             st.executeUpdate(sql);
-            JOptionPane.showMessageDialog(null,"Store Added...");
-            store_name.setText("");
+            JOptionPane.showMessageDialog(null,"Payment Method Added...");
+            name.setText("");
         }catch(Exception e) {
             JOptionPane.showMessageDialog(null,e.getMessage());
         }
-            
-        
-        
-        
-        
-        
-    }
+   }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -53,16 +46,15 @@ public class auctionstore extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        store_name = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
+        name = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Auction Store");
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jLabel1.setText("Store Name:");
+        jLabel1.setText("Payment Method Name:");
 
-        jButton1.setText("Add Store");
+        jButton1.setText("ADD Payment Method");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
@@ -73,34 +65,33 @@ public class auctionstore extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(117, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(60, 60, 60)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jButton1)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(store_name, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(57, 57, 57))
+                        .addGap(18, 18, 18)
+                        .addComponent(name, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(64, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(107, 107, 107)
+                .addGap(97, 97, 97)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(store_name, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel1))
+                    .addComponent(jLabel1)
+                    .addComponent(name, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jButton1)
-                .addContainerGap(139, Short.MAX_VALUE))
+                .addContainerGap(149, Short.MAX_VALUE))
         );
 
         pack();
-        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        AddStore();
+        AddMethod();
     }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
@@ -120,20 +111,20 @@ public class auctionstore extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(auctionstore.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(paymentmethod.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(auctionstore.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(paymentmethod.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(auctionstore.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(paymentmethod.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(auctionstore.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(paymentmethod.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new auctionstore().setVisible(true);
+                new paymentmethod().setVisible(true);
             }
         });
     }
@@ -141,6 +132,6 @@ public class auctionstore extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JTextField store_name;
+    private javax.swing.JTextField name;
     // End of variables declaration//GEN-END:variables
 }

@@ -139,6 +139,57 @@ public class Place_an_order extends javax.swing.JFrame {
      }
         
     } */
+    
+    public void ids() {
+         DBConnection db = new DBConnection();
+       try {
+         Connection con = (Connection) DriverManager.getConnection("jdbc:mysql://localhost/customerinfo", "root", "");
+         Statement st = con.createStatement();
+         ResultSet rs;
+         String mysqlQuery = "SELECT * FROM `cust_info`";
+         rs = st.executeQuery(mysqlQuery);
+         while(rs.next()) {
+             String id = rs.getString("customer id");
+              jcombo1.addItem(id);
+         }
+     }catch(Exception e) {
+         JOptionPane.showMessageDialog(null,"Not Connected To Database");
+     }
+    }
+    
+    public void auctionstores() {
+         DBConnection db = new DBConnection();
+       try {
+         Connection con = (Connection) DriverManager.getConnection("jdbc:mysql://localhost/customerinfo", "root", "");
+         Statement st = con.createStatement();
+         ResultSet rs;
+         String mysqlQuery = "SELECT * FROM `auctionstore`";
+         rs = st.executeQuery(mysqlQuery);
+         while(rs.next()) {
+             String id = rs.getString("auction store");
+              auctionstorebox.addItem(id);
+         }
+     }catch(Exception e) {
+         JOptionPane.showMessageDialog(null,"Not Connected To Database");
+     }
+    }
+    
+    public void paymethods() {
+         DBConnection db = new DBConnection();
+       try {
+         Connection con = (Connection) DriverManager.getConnection("jdbc:mysql://localhost/customerinfo", "root", "");
+         Statement st = con.createStatement();
+         ResultSet rs;
+         String mysqlQuery = "SELECT * FROM `paymentmethods`";
+         rs = st.executeQuery(mysqlQuery);
+         while(rs.next()) {
+             String id = rs.getString("payment Methods");
+              mop.addItem(id);
+         }
+     }catch(Exception e) {
+         JOptionPane.showMessageDialog(null,"Not Connected To Database");
+     }
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -394,8 +445,6 @@ public class Place_an_order extends javax.swing.JFrame {
 
         jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder("Item Information"));
 
-        mop.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Payment1", "Payment2", "Payment3", " " }));
-
         jLabel18.setText("Selling Price Shipping:");
 
         retailP.addActionListener(new java.awt.event.ActionListener() {
@@ -406,7 +455,11 @@ public class Place_an_order extends javax.swing.JFrame {
 
         jLabel16.setText("Selling Price:");
 
-        auctionstorebox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        auctionstorebox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                auctionstoreboxActionPerformed(evt);
+            }
+        });
 
         jLabel14.setText("Date Of Order");
 
@@ -720,20 +773,9 @@ public class Place_an_order extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
-       DBConnection db = new DBConnection();
-       try {
-         Connection con = (Connection) DriverManager.getConnection("jdbc:mysql://localhost/customerinfo", "root", "");
-         Statement st = con.createStatement();
-         ResultSet rs;
-         String mysqlQuery = "SELECT * FROM `cust_info`";
-         rs = st.executeQuery(mysqlQuery);
-         while(rs.next()) {
-             String id = rs.getString("customer id");
-              jcombo1.addItem(id);
-         }
-     }catch(Exception e) {
-         JOptionPane.showMessageDialog(null,"Not Connected To Database");
-     }
+        ids();
+        auctionstores();
+        paymethods();
     }//GEN-LAST:event_formWindowOpened
 
     private void postalcodeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_postalcodeActionPerformed
@@ -848,6 +890,10 @@ public class Place_an_order extends javax.swing.JFrame {
            email.setForeground(Color.white);
        }
     }//GEN-LAST:event_emailKeyTyped
+
+    private void auctionstoreboxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_auctionstoreboxActionPerformed
+        
+    }//GEN-LAST:event_auctionstoreboxActionPerformed
 
     /**
      * @param args the command line arguments
