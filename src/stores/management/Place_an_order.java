@@ -6,6 +6,7 @@
 package stores.management;
 
 import com.mysql.jdbc.Connection;
+import com.sun.glass.events.KeyEvent;
 import java.awt.Color;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -190,6 +191,24 @@ public class Place_an_order extends javax.swing.JFrame {
          JOptionPane.showMessageDialog(null,"Not Connected To Database");
      }
     }
+    public void addAccounts() {
+         DBConnection db = new DBConnection();
+       try {
+         Connection con = (Connection) DriverManager.getConnection("jdbc:mysql://localhost/customerinfo", "root", "");
+         Statement st = con.createStatement();
+         ResultSet rs;
+         String mysqlQuery = "SELECT * FROM `pickfromwhichaccount`";
+         rs = st.executeQuery(mysqlQuery);
+         while(rs.next()) {
+              String id = rs.getString("pfwa");
+              pfwa.addItem(id);
+         }
+     }catch(Exception e) {
+         JOptionPane.showMessageDialog(null,"Not Connected To Database");
+     }
+    }
+    
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -289,6 +308,11 @@ public class Place_an_order extends javax.swing.JFrame {
                 customeridActionPerformed(evt);
             }
         });
+        customerid.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                customeridKeyTyped(evt);
+            }
+        });
 
         jLabel1.setText("New Customer ID:");
 
@@ -337,6 +361,12 @@ public class Place_an_order extends javax.swing.JFrame {
         postalcode.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 postalcodeActionPerformed(evt);
+            }
+        });
+
+        phonenumber.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                phonenumberKeyTyped(evt);
             }
         });
 
@@ -452,6 +482,11 @@ public class Place_an_order extends javax.swing.JFrame {
                 retailPActionPerformed(evt);
             }
         });
+        retailP.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                retailPKeyTyped(evt);
+            }
+        });
 
         jLabel16.setText("Selling Price:");
 
@@ -465,11 +500,21 @@ public class Place_an_order extends javax.swing.JFrame {
 
         jLabel9.setText("Auction Store:");
 
-        pfwa.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        rps.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                rpsKeyTyped(evt);
+            }
+        });
 
         jLabel17.setText("Retail Price Shipping:");
 
         jLabel10.setText("Order Number:");
+
+        sps.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                spsKeyTyped(evt);
+            }
+        });
 
         jLabel19.setText("Earnings:");
 
@@ -479,7 +524,19 @@ public class Place_an_order extends javax.swing.JFrame {
 
         jLabel21.setText("Pick Date:");
 
+        sp.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                spKeyTyped(evt);
+            }
+        });
+
         jLabel28.setText("Date Of Shipping (Company):");
+
+        objectnumber.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                objectnumberKeyTyped(evt);
+            }
+        });
 
         jLabel12.setText("Start Date");
 
@@ -487,9 +544,20 @@ public class Place_an_order extends javax.swing.JFrame {
 
         jLabel7.setText("Object Number:");
 
+        er.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                erKeyTyped(evt);
+            }
+        });
+
         ordernumber.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 ordernumberActionPerformed(evt);
+            }
+        });
+        ordernumber.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                ordernumberKeyTyped(evt);
             }
         });
 
@@ -776,6 +844,7 @@ public class Place_an_order extends javax.swing.JFrame {
         ids();
         auctionstores();
         paymethods();
+        addAccounts();
     }//GEN-LAST:event_formWindowOpened
 
     private void postalcodeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_postalcodeActionPerformed
@@ -894,6 +963,69 @@ public class Place_an_order extends javax.swing.JFrame {
     private void auctionstoreboxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_auctionstoreboxActionPerformed
         
     }//GEN-LAST:event_auctionstoreboxActionPerformed
+
+    private void customeridKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_customeridKeyTyped
+        char c = evt.getKeyChar();
+        if(!(Character.isDigit(c) || (c==KeyEvent.VK_BACKSPACE) || c==KeyEvent.VK_DELETE)) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_customeridKeyTyped
+
+    private void phonenumberKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_phonenumberKeyTyped
+        char c = evt.getKeyChar();
+        if(!(Character.isDigit(c) || (c==KeyEvent.VK_BACKSPACE) || c==KeyEvent.VK_DELETE)) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_phonenumberKeyTyped
+
+    private void objectnumberKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_objectnumberKeyTyped
+        char c = evt.getKeyChar();
+        if(!(Character.isDigit(c) || (c==KeyEvent.VK_BACKSPACE) || c==KeyEvent.VK_DELETE)) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_objectnumberKeyTyped
+
+    private void ordernumberKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_ordernumberKeyTyped
+       char c = evt.getKeyChar();
+        if(!(Character.isDigit(c) || (c==KeyEvent.VK_BACKSPACE) || c==KeyEvent.VK_DELETE)) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_ordernumberKeyTyped
+
+    private void retailPKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_retailPKeyTyped
+       char c = evt.getKeyChar();
+        if(!(Character.isDigit(c) || (c==KeyEvent.VK_BACKSPACE) || c==KeyEvent.VK_DELETE)) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_retailPKeyTyped
+
+    private void rpsKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_rpsKeyTyped
+        char c = evt.getKeyChar();
+        if(!(Character.isDigit(c) || (c==KeyEvent.VK_BACKSPACE) || c==KeyEvent.VK_DELETE)) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_rpsKeyTyped
+
+    private void spKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_spKeyTyped
+        char c = evt.getKeyChar();
+        if(!(Character.isDigit(c) || (c==KeyEvent.VK_BACKSPACE) || c==KeyEvent.VK_DELETE)) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_spKeyTyped
+
+    private void spsKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_spsKeyTyped
+        char c = evt.getKeyChar();
+        if(!(Character.isDigit(c) || (c==KeyEvent.VK_BACKSPACE) || c==KeyEvent.VK_DELETE)) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_spsKeyTyped
+
+    private void erKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_erKeyTyped
+        char c = evt.getKeyChar();
+        if(!(Character.isDigit(c) || (c==KeyEvent.VK_BACKSPACE) || c==KeyEvent.VK_DELETE)) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_erKeyTyped
 
     /**
      * @param args the command line arguments
