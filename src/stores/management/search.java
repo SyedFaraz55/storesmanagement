@@ -220,7 +220,7 @@ public class search extends javax.swing.JFrame {
 
         jLabel1.setText("Search By:");
 
-        jcombo2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "customer id", "object number", "ordernumber", "paid ", "unpaid", "Auction Store", " " }));
+        jcombo2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "customer id", "customer name", "object number", "ordernumber", "status", "auctionstore", "phone", " " }));
         jcombo2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jcombo2ActionPerformed(evt);
@@ -268,14 +268,14 @@ public class search extends javax.swing.JFrame {
         ));
         jScrollPane2.setViewportView(item);
 
-        jcombo3.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "customer id", "object number", "ordernumber", "paid ", "unpaid", "Auction Store", " " }));
+        jcombo3.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "customer id", "customer name", "object number", "ordernumber", "status", "auctionstore", "phone", " " }));
         jcombo3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jcombo3ActionPerformed(evt);
             }
         });
 
-        jcombo4.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "customer id", "object number", "ordernumber", "paid ", "unpaid", "Auction Store", " " }));
+        jcombo4.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "customer id", "customer name", "object number", "ordernumber", "status", "auctionstore", "phone", " " }));
         jcombo4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jcombo4ActionPerformed(evt);
