@@ -61,6 +61,11 @@ public class Main extends javax.swing.JFrame {
         });
 
         jButton5.setText("Products");
+        jButton5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton5ActionPerformed(evt);
+            }
+        });
 
         jButton1.setText("Add An Order");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -241,6 +246,11 @@ public class Main extends javax.swing.JFrame {
         pickfromwhichaccount obj = new pickfromwhichaccount();
         obj.setVisible(true);
     }//GEN-LAST:event_jButton11ActionPerformed
+
+    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+       productv o = new productv();
+       o.setVisible(true);
+    }//GEN-LAST:event_jButton5ActionPerformed
 
     /**
      * @param args the command line arguments
