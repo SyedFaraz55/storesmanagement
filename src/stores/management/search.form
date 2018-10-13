@@ -24,44 +24,54 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Group type="102" alignment="0" attributes="0">
-              <Group type="103" groupAlignment="1" attributes="0">
+          <Group type="102" attributes="0">
+              <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="jScrollPane2" max="32767" attributes="0"/>
+                      <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Component id="filter" min="-2" pref="201" max="-2" attributes="0"/>
+                      <EmptySpace min="0" pref="1091" max="32767" attributes="0"/>
                   </Group>
                   <Group type="102" attributes="0">
-                      <EmptySpace min="-2" pref="26" max="-2" attributes="0"/>
-                      <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" alignment="0" attributes="0">
-                              <Component id="jcombo2" min="-2" pref="120" max="-2" attributes="0"/>
+                              <EmptySpace min="0" pref="100" max="32767" attributes="0"/>
+                              <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
                               <EmptySpace type="separate" max="-2" attributes="0"/>
-                              <Component id="key" min="-2" pref="172" max="-2" attributes="0"/>
-                              <EmptySpace type="separate" max="-2" attributes="0"/>
-                              <Component id="jButton1" min="-2" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Group type="102" alignment="0" attributes="0">
+                                      <Component id="jcombo2" min="-2" pref="120" max="-2" attributes="0"/>
+                                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                                      <Component id="key" min="-2" pref="172" max="-2" attributes="0"/>
+                                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                                      <Component id="jButton1" min="-2" max="-2" attributes="0"/>
+                                  </Group>
+                                  <Group type="102" alignment="0" attributes="0">
+                                      <Component id="jcombo4" min="-2" pref="120" max="-2" attributes="0"/>
+                                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                                      <Component id="key2" min="-2" pref="172" max="-2" attributes="0"/>
+                                      <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
+                                      <Component id="jButton3" min="-2" max="-2" attributes="0"/>
+                                  </Group>
+                                  <Group type="102" alignment="0" attributes="0">
+                                      <Component id="jcombo3" min="-2" pref="120" max="-2" attributes="0"/>
+                                      <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
+                                      <Component id="key1" min="-2" pref="172" max="-2" attributes="0"/>
+                                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                                      <Component id="jButton2" min="-2" max="-2" attributes="0"/>
+                                  </Group>
+                              </Group>
+                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                              <Component id="jScrollPane1" min="-2" pref="739" max="-2" attributes="0"/>
+                              <EmptySpace min="0" pref="12" max="32767" attributes="0"/>
                           </Group>
-                          <Group type="102" alignment="0" attributes="0">
-                              <Component id="jcombo4" min="-2" pref="120" max="-2" attributes="0"/>
-                              <EmptySpace type="separate" max="-2" attributes="0"/>
-                              <Component id="key2" min="-2" pref="172" max="-2" attributes="0"/>
-                              <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
-                              <Component id="jButton3" min="-2" max="-2" attributes="0"/>
-                          </Group>
-                          <Group type="102" alignment="0" attributes="0">
-                              <Component id="jcombo3" min="-2" pref="120" max="-2" attributes="0"/>
-                              <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
-                              <Component id="key1" min="-2" pref="172" max="-2" attributes="0"/>
-                              <EmptySpace type="separate" max="-2" attributes="0"/>
-                              <Component id="jButton2" min="-2" max="-2" attributes="0"/>
-                          </Group>
+                          <Component id="jScrollPane2" alignment="0" max="32767" attributes="0"/>
                       </Group>
-                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                      <Component id="jScrollPane1" min="-2" pref="658" max="-2" attributes="0"/>
                   </Group>
               </Group>
-              <EmptySpace pref="18" max="32767" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -92,9 +102,14 @@
                   </Group>
                   <Component id="jScrollPane1" alignment="0" min="-2" pref="119" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace min="-2" pref="45" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="7" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="filter" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="jLabel2" alignment="3" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace type="separate" max="-2" attributes="0"/>
               <Component id="jScrollPane2" min="-2" pref="267" max="-2" attributes="0"/>
-              <EmptySpace pref="70" max="32767" attributes="0"/>
+              <EmptySpace pref="137" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -108,7 +123,7 @@
     <Component class="javax.swing.JComboBox" name="jcombo2">
       <Properties>
         <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-          <StringArray count="8">
+          <StringArray count="11">
             <StringItem index="0" value="customer id"/>
             <StringItem index="1" value="customer name"/>
             <StringItem index="2" value="object number"/>
@@ -116,7 +131,10 @@
             <StringItem index="4" value="status"/>
             <StringItem index="5" value="auctionstore"/>
             <StringItem index="6" value="phone"/>
-            <StringItem index="7" value=" "/>
+            <StringItem index="7" value="startdate"/>
+            <StringItem index="8" value="enddate"/>
+            <StringItem index="9" value="dateoforder"/>
+            <StringItem index="10" value=" "/>
           </StringArray>
         </Property>
       </Properties>
@@ -154,6 +172,7 @@
     <Component class="javax.swing.JTextField" name="key">
       <Events>
         <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="keyKeyPressed"/>
+        <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="keyKeyReleased"/>
       </Events>
     </Component>
     <Component class="javax.swing.JButton" name="jButton1">
@@ -201,7 +220,7 @@
     <Component class="javax.swing.JComboBox" name="jcombo3">
       <Properties>
         <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-          <StringArray count="8">
+          <StringArray count="11">
             <StringItem index="0" value="customer id"/>
             <StringItem index="1" value="customer name"/>
             <StringItem index="2" value="object number"/>
@@ -209,7 +228,10 @@
             <StringItem index="4" value="status"/>
             <StringItem index="5" value="auctionstore"/>
             <StringItem index="6" value="phone"/>
-            <StringItem index="7" value=" "/>
+            <StringItem index="7" value="startdate"/>
+            <StringItem index="8" value="enddate"/>
+            <StringItem index="9" value="dateoforder"/>
+            <StringItem index="10" value=" "/>
           </StringArray>
         </Property>
       </Properties>
@@ -223,7 +245,7 @@
     <Component class="javax.swing.JComboBox" name="jcombo4">
       <Properties>
         <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-          <StringArray count="8">
+          <StringArray count="11">
             <StringItem index="0" value="customer id"/>
             <StringItem index="1" value="customer name"/>
             <StringItem index="2" value="object number"/>
@@ -231,7 +253,10 @@
             <StringItem index="4" value="status"/>
             <StringItem index="5" value="auctionstore"/>
             <StringItem index="6" value="phone"/>
-            <StringItem index="7" value=" "/>
+            <StringItem index="7" value="startdate"/>
+            <StringItem index="8" value="enddate"/>
+            <StringItem index="9" value="dateoforder"/>
+            <StringItem index="10" value=" "/>
           </StringArray>
         </Property>
       </Properties>
@@ -267,6 +292,16 @@
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton3ActionPerformed"/>
       </Events>
+    </Component>
+    <Component class="javax.swing.JTextField" name="filter">
+      <Events>
+        <EventHandler event="keyReleased" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="filterKeyReleased"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JLabel" name="jLabel2">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Filter:"/>
+      </Properties>
     </Component>
   </SubComponents>
 </Form>

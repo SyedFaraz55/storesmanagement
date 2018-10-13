@@ -11,33 +11,112 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import javax.swing.JOptionPane;
+import javax.swing.RowFilter;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
+import org.apache.commons.dbutils.DbUtils;
 
 /**
  *
  * @author home
  */
 public class search extends javax.swing.JFrame {
-
-    /**
-     * Creates new form search
-     */
+    
+    DefaultTableModel model;
+    
     public search() {
         initComponents();
     }
     
     
-    public void Search() {
+    public void filter(String sql) {
+     
+        model = (DefaultTableModel) customerinfo.getModel();
+        TableRowSorter<DefaultTableModel> tr = new TableRowSorter<DefaultTableModel>(model);
+        customerinfo.setRowSorter(tr);
+        tr.setRowFilter(RowFilter.regexFilter(sql));
         
+    }
+    
+    
+    
+    
+    // code for filtering the data
+
+    public String filtering(String ValueToSearch) {
+       DefaultTableModel model = (DefaultTableModel) customerinfo.getModel();
+        DefaultTableModel model2 = (DefaultTableModel) item.getModel();
+        
+        
+        String id = "",name = "",address = "",pc = "",phn="",country = "",eml="",objno="",astore="",ornumber="",pfwa="",sd="",ed,dor,mop,pd,dosm,dosc,ss;
+        int rp,sp,rps,sps,er;
+        try {
+            Connection con = (Connection) DriverManager.getConnection("jdbc:mysql://localhost/customerinfo","root","");
+            Statement st  = con.createStatement();
+            ResultSet rs;
+            String sqlQuery = "SELECT * FROM `cust_info` WHERE CONCAT(`customer id`, `customer name`, `address`, `postal code`, `phone`, `country`, `email`, `object number`, `auctionstore`, `ordernumber`, `pfwa`, `startdate`, `enddate`, `dateoforder`, `retailprice`, `retailpriceshipping`, `sellingprice`, `sellingpriceshipping`, `earnings`, `methododpayment`, `pickdate`, `dosManufacuturer`, `dosCompany`, `status`) LIKE '%"+ValueToSearch+"%'";
+            rs = st.executeQuery(sqlQuery);
+            while(rs.next()) {
+                 id = rs.getString("customer id");
+                 name = rs.getString("customer name");
+                 address = rs.getString ("address");
+                 pc = rs.getString("postal code");
+                 phn = rs.getString("phone");
+                 country = rs.getString("country");
+                 eml = rs.getString("email");
+                 objno = rs.getString("object number");
+                 astore = rs.getString("auctionstore");
+                 ornumber = rs.getString("ordernumber");
+                 pfwa = rs.getString("pfwa");
+                 sd = rs.getString("startdate");
+                 ed = rs.getString("enddate");
+                 dor = rs.getString("dateoforder");
+                 rp = rs.getInt("retailprice");
+                 rps = rs.getInt("retailpriceshipping");
+                 sp = rs.getInt("sellingprice");
+                 sps = rs.getInt("sellingpriceshipping");
+                 er = rs.getInt("earnings");
+                 mop = rs.getString("methododpayment");
+                 pd = rs.getString("pickdate");
+                 dosm = rs.getString("dosManufacuturer");
+                 dosc  = rs.getString("dosCompany");
+                 ss = rs.getString("status");
+                 
+                 
+                model = (DefaultTableModel) customerinfo.getModel();
+        TableRowSorter<DefaultTableModel> tr = new TableRowSorter<DefaultTableModel>(model);
+        customerinfo.setRowSorter(tr);
+        tr.setRowFilter(RowFilter.regexFilter(ValueToSearch));
+        
+            }
+            model.setRowCount(0);
+            model.addRow(new Object[] {id,name,address,pc,phn,country,eml});
+            if(filter.getText().equals("")) {
+                model.getDataVector().removeAllElements();
+                model.fireTableDataChanged();
+            }
+            
+            
+            
+
+        }catch(Exception e) {
+            JOptionPane.showMessageDialog(null,e.getMessage());
+        }
+        return ValueToSearch;
+    }
+
+
+    public void Search() {
+
         String column = jcombo2.getSelectedItem().toString();
         String value = key.getText();
         DefaultTableModel model = (DefaultTableModel) customerinfo.getModel();
         DefaultTableModel model2 = (DefaultTableModel) item.getModel();
-        
+
         String ci,cn,ad,phn,eml,pc,cntry,obn,aas,orn,pfwa,sd,ed,dor="";
         String rp,rsp,sp,sps,er,mop,pd,dosm,dosc,sts;
-        
-        
+
+
         try {
          Connection con = (Connection) DriverManager.getConnection("jdbc:mysql://localhost/customerinfo", "root", "");
          Statement st = con.createStatement();
@@ -71,28 +150,28 @@ public class search extends javax.swing.JFrame {
              sts = rs.getString("status");
              model.addRow(new Object[] {ci,cn,ad,pc,phn,cntry,eml});
              model2.addRow(new Object[] {obn,aas,orn,pfwa,sd,ed,dor,rp,rsp,sp,sps,er,mop,pd,dosm,dosc,sts});
-                     
+
          } else {
              JOptionPane.showMessageDialog(null, "Not found");
          }
-         
+
      }catch(Exception e) {
          System.out.println(e.getMessage());
      }
     }
-    
-    
+
+
     public void Search2() {
-        
+
         String column = jcombo3.getSelectedItem().toString();
         String value = key1.getText();
         DefaultTableModel model = (DefaultTableModel) customerinfo.getModel();
         DefaultTableModel model2 = (DefaultTableModel) item.getModel();
-        
+
         String ci,cn,ad,phn,eml,pc,cntry,obn,aas,orn,pfwa,sd,ed,dor="";
         String rp,rsp,sp,sps,er,mop,pd,dosm,dosc,sts;
-        
-        
+
+
         try {
          Connection con = (Connection) DriverManager.getConnection("jdbc:mysql://localhost/customerinfo", "root", "");
          Statement st = con.createStatement();
@@ -126,27 +205,27 @@ public class search extends javax.swing.JFrame {
              sts = rs.getString("status");
              model.addRow(new Object[] {ci,cn,ad,pc,phn,cntry,eml});
              model2.addRow(new Object[] {obn,aas,orn,pfwa,sd,ed,dor,rp,rsp,sp,sps,er,mop,pd,dosm,dosc,sts});
-                     
+
          } else {
              JOptionPane.showMessageDialog(null, "Not found");
          }
-         
+
      }catch(Exception e) {
          System.out.println(e.getMessage());
      }
     }
-    
+
     public void Search3() {
-        
+
         String column = jcombo4.getSelectedItem().toString();
         String value = key2.getText();
         DefaultTableModel model = (DefaultTableModel) customerinfo.getModel();
         DefaultTableModel model2 = (DefaultTableModel) item.getModel();
-        
+
         String ci,cn,ad,phn,eml,pc,cntry,obn,aas,orn,pfwa,sd,ed,dor="";
         String rp,rsp,sp,sps,er,mop,pd,dosm,dosc,sts;
-        
-        
+
+
         try {
          Connection con = (Connection) DriverManager.getConnection("jdbc:mysql://localhost/customerinfo", "root", "");
          Statement st = con.createStatement();
@@ -180,16 +259,18 @@ public class search extends javax.swing.JFrame {
              sts = rs.getString("status");
              model.addRow(new Object[] {ci,cn,ad,pc,phn,cntry,eml});
              model2.addRow(new Object[] {obn,aas,orn,pfwa,sd,ed,dor,rp,rsp,sp,sps,er,mop,pd,dosm,dosc,sts});
-                     
+
          } else {
              JOptionPane.showMessageDialog(null, "Not found");
          }
-         
+
      }catch(Exception e) {
          System.out.println(e.getMessage());
      }
     }
     
+    
+
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -214,13 +295,15 @@ public class search extends javax.swing.JFrame {
         key2 = new javax.swing.JTextField();
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
+        filter = new javax.swing.JTextField();
+        jLabel2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Search");
 
         jLabel1.setText("Search By:");
 
-        jcombo2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "customer id", "customer name", "object number", "ordernumber", "status", "auctionstore", "phone", " " }));
+        jcombo2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "customer id", "customer name", "object number", "ordernumber", "status", "auctionstore", "phone", "startdate", "enddate", "dateoforder", " " }));
         jcombo2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jcombo2ActionPerformed(evt);
@@ -249,6 +332,9 @@ public class search extends javax.swing.JFrame {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 keyKeyPressed(evt);
             }
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                keyKeyReleased(evt);
+            }
         });
 
         jButton1.setText("Search");
@@ -268,14 +354,14 @@ public class search extends javax.swing.JFrame {
         ));
         jScrollPane2.setViewportView(item);
 
-        jcombo3.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "customer id", "customer name", "object number", "ordernumber", "status", "auctionstore", "phone", " " }));
+        jcombo3.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "customer id", "customer name", "object number", "ordernumber", "status", "auctionstore", "phone", "startdate", "enddate", "dateoforder", " " }));
         jcombo3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jcombo3ActionPerformed(evt);
             }
         });
 
-        jcombo4.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "customer id", "customer name", "object number", "ordernumber", "status", "auctionstore", "phone", " " }));
+        jcombo4.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "customer id", "customer name", "object number", "ordernumber", "status", "auctionstore", "phone", "startdate", "enddate", "dateoforder", " " }));
         jcombo4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jcombo4ActionPerformed(evt);
@@ -308,41 +394,57 @@ public class search extends javax.swing.JFrame {
             }
         });
 
+        filter.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                filterKeyReleased(evt);
+            }
+        });
+
+        jLabel2.setText("Filter:");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(jScrollPane2))
+                        .addComponent(jLabel2)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(filter, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 1091, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(26, 26, 26)
-                        .addComponent(jLabel1)
-                        .addGap(18, 18, 18)
+                        .addContainerGap()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jcombo2, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 100, Short.MAX_VALUE)
+                                .addComponent(jLabel1)
                                 .addGap(18, 18, 18)
-                                .addComponent(key, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(jButton1))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jcombo4, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(key2, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(jButton3))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jcombo3, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(key1, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(jButton2)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 658, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(18, Short.MAX_VALUE))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jcombo2, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(key, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(jButton1))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jcombo4, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(key2, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(jButton3))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jcombo3, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(key1, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(jButton2)))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 739, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 12, Short.MAX_VALUE))
+                            .addComponent(jScrollPane2))))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -366,9 +468,13 @@ public class search extends javax.swing.JFrame {
                             .addComponent(jcombo4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(key2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(45, 45, 45)
+                .addGap(7, 7, 7)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(filter, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel2))
+                .addGap(18, 18, 18)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 267, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(70, Short.MAX_VALUE))
+                .addContainerGap(137, Short.MAX_VALUE))
         );
 
         pack();
@@ -376,7 +482,7 @@ public class search extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jcombo2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jcombo2ActionPerformed
-        
+
     }//GEN-LAST:event_jcombo2ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
@@ -418,6 +524,18 @@ public class search extends javax.swing.JFrame {
         Search3();
     }//GEN-LAST:event_jButton3ActionPerformed
 
+    private void keyKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_keyKeyReleased
+
+    }//GEN-LAST:event_keyKeyReleased
+
+    private void filterKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_filterKeyReleased
+//        String key = filter.getText().toLowerCase();
+//        filter(key);
+
+        String key = filter.getText();
+        filtering(key);
+    }//GEN-LAST:event_filterKeyReleased
+
     /**
      * @param args the command line arguments
      */
@@ -425,7 +543,7 @@ public class search extends javax.swing.JFrame {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html
          */
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
@@ -455,11 +573,13 @@ public class search extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTable customerinfo;
+    private javax.swing.JTextField filter;
     private javax.swing.JTable item;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JComboBox<String> jcombo2;
