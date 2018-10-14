@@ -5,6 +5,7 @@
  */
 package stores.management;
 
+import com.sun.glass.events.KeyEvent;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.Statement;
@@ -55,6 +56,12 @@ public class paymentmethod extends javax.swing.JFrame {
 
         jLabel1.setText("Payment Method Name:");
 
+        name.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                nameKeyPressed(evt);
+            }
+        });
+
         jButton1.setText("ADD Payment Method");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -89,11 +96,18 @@ public class paymentmethod extends javax.swing.JFrame {
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         AddMethod();
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void nameKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_nameKeyPressed
+        if(evt.getKeyCode() == KeyEvent.VK_ENTER) {
+         AddMethod();
+     }
+    }//GEN-LAST:event_nameKeyPressed
 
     /**
      * @param args the command line arguments

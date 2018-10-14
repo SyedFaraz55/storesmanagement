@@ -5,6 +5,7 @@
  */
 package stores.management;
 
+import com.sun.glass.events.KeyEvent;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.Statement;
@@ -60,6 +61,12 @@ public class auctionstore extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Auction Store");
 
+        store_name.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                store_nameKeyPressed(evt);
+            }
+        });
+
         jLabel1.setText("Store Name:");
 
         jButton1.setText("Add Store");
@@ -102,6 +109,12 @@ public class auctionstore extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         AddStore();
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void store_nameKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_store_nameKeyPressed
+        if(evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            AddStore();
+        }
+    }//GEN-LAST:event_store_nameKeyPressed
 
     /**
      * @param args the command line arguments

@@ -5,6 +5,7 @@
  */
 package stores.management;
 
+import com.sun.glass.events.KeyEvent;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.Statement;
@@ -64,6 +65,12 @@ public class pickfromwhichaccount extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Pick From Which Account");
 
+        name.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                nameKeyPressed(evt);
+            }
+        });
+
         jLabel1.setText("Add Account:");
 
         jButton2.setText("Add Account");
@@ -106,6 +113,12 @@ public class pickfromwhichaccount extends javax.swing.JFrame {
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
        AddAccount();
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void nameKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_nameKeyPressed
+        if(evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            AddAccount();
+        }
+    }//GEN-LAST:event_nameKeyPressed
 
     /**
      * @param args the command line arguments

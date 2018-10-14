@@ -43,18 +43,18 @@ public class search extends javax.swing.JFrame {
     
     // code for filtering the data
 
-    public String filtering(String ValueToSearch) {
-       DefaultTableModel model = (DefaultTableModel) customerinfo.getModel();
+    public void filtering2(String ValueToSearch) {
+        DefaultTableModel model = (DefaultTableModel) customerinfo.getModel();
         DefaultTableModel model2 = (DefaultTableModel) item.getModel();
         
         
-        String id = "",name = "",address = "",pc = "",phn="",country = "",eml="",objno="",astore="",ornumber="",pfwa="",sd="",ed,dor,mop,pd,dosm,dosc,ss;
-        int rp,sp,rps,sps,er;
+        String id = "",name = "",pid="",address = "",pc = "",phn="",country = "",eml="",objno="",astore="",ornumber="",pfwa="",sd="",ed="",dor="",mop="",pd="",dosm="",dosc="",ss="";
+        int rp =0,sp =0,rps =0,sps =0,er =0;
         try {
             Connection con = (Connection) DriverManager.getConnection("jdbc:mysql://localhost/customerinfo","root","");
             Statement st  = con.createStatement();
             ResultSet rs;
-            String sqlQuery = "SELECT * FROM `cust_info` WHERE CONCAT(`customer id`, `customer name`, `address`, `postal code`, `phone`, `country`, `email`, `object number`, `auctionstore`, `ordernumber`, `pfwa`, `startdate`, `enddate`, `dateoforder`, `retailprice`, `retailpriceshipping`, `sellingprice`, `sellingpriceshipping`, `earnings`, `methododpayment`, `pickdate`, `dosManufacuturer`, `dosCompany`, `status`) LIKE '%"+ValueToSearch+"%'";
+            String sqlQuery = "SELECT * FROM `cust_info` WHERE CONCAT(`customer id`, `customer name`, `address`, `postal code`, `phone`, `country`, `email`, `object number`, `auctionstore`, `ordernumber`, `pfwa`, `startdate`, `enddate`, `dateoforder`, `retailprice`, `retailpriceshipping`, `sellingprice`, `sellingpriceshipping`, `earnings`, `methododpayment`, `dateofpayment`, `dosManufacuturer`, `dosCompany`, `status`,'productid') LIKE '%"+ValueToSearch+"%'";
             rs = st.executeQuery(sqlQuery);
             while(rs.next()) {
                  id = rs.getString("customer id");
@@ -77,23 +77,27 @@ public class search extends javax.swing.JFrame {
                  sps = rs.getInt("sellingpriceshipping");
                  er = rs.getInt("earnings");
                  mop = rs.getString("methododpayment");
-                 pd = rs.getString("pickdate");
+                 pd = rs.getString("dateofpayment");
                  dosm = rs.getString("dosManufacuturer");
                  dosc  = rs.getString("dosCompany");
                  ss = rs.getString("status");
+                 pid = rs.getString("productid");
                  
-                 
-                model = (DefaultTableModel) customerinfo.getModel();
-        TableRowSorter<DefaultTableModel> tr = new TableRowSorter<DefaultTableModel>(model);
-        customerinfo.setRowSorter(tr);
-        tr.setRowFilter(RowFilter.regexFilter(ValueToSearch));
+                 model.setRowCount(0);
+                 model2.setRowCount(0);
+                 model.addRow(new Object[] {id,name,address,pc,phn,country,eml});
+                 model2.addRow(new Object[] {objno,astore,ornumber,pfwa,sd,ed,dor,rp,rps,sp,sps,er,mop,pd,dosm,dosc,ss,pid});
         
             }
-            model.setRowCount(0);
-            model.addRow(new Object[] {id,name,address,pc,phn,country,eml});
+            
+           
             if(filter.getText().equals("")) {
                 model.getDataVector().removeAllElements();
                 model.fireTableDataChanged();
+            }
+            if(filter.getText().equals("")) {
+                model2.getDataVector().removeAllElements();
+                model2.fireTableDataChanged();
             }
             
             
@@ -102,7 +106,7 @@ public class search extends javax.swing.JFrame {
         }catch(Exception e) {
             JOptionPane.showMessageDialog(null,e.getMessage());
         }
-        return ValueToSearch;
+        
     }
 
 
@@ -113,7 +117,7 @@ public class search extends javax.swing.JFrame {
         DefaultTableModel model = (DefaultTableModel) customerinfo.getModel();
         DefaultTableModel model2 = (DefaultTableModel) item.getModel();
 
-        String ci,cn,ad,phn,eml,pc,cntry,obn,aas,orn,pfwa,sd,ed,dor="";
+        String ci,cn,ad,phn,eml,pc,cntry,obn,aas,orn,pfwa,sd,ed,pid,dor="";
         String rp,rsp,sp,sps,er,mop,pd,dosm,dosc,sts;
 
 
@@ -144,12 +148,13 @@ public class search extends javax.swing.JFrame {
              sps = rs.getString("sellingpriceshipping");
              er = rs.getString("earnings");
              mop = rs.getString("methododpayment");
-             pd = rs.getString("pickdate");
+             pd = rs.getString("dateofpayment");
              dosm = rs.getString("dosManufacuturer");
              dosc = rs.getString("dosCompany");
              sts = rs.getString("status");
+             pid = rs.getString("productid");
              model.addRow(new Object[] {ci,cn,ad,pc,phn,cntry,eml});
-             model2.addRow(new Object[] {obn,aas,orn,pfwa,sd,ed,dor,rp,rsp,sp,sps,er,mop,pd,dosm,dosc,sts});
+             model2.addRow(new Object[] {obn,aas,orn,pfwa,sd,ed,dor,rp,rsp,sp,sps,er,mop,pd,dosm,dosc,sts,pid});
 
          } else {
              JOptionPane.showMessageDialog(null, "Not found");
@@ -168,7 +173,7 @@ public class search extends javax.swing.JFrame {
         DefaultTableModel model = (DefaultTableModel) customerinfo.getModel();
         DefaultTableModel model2 = (DefaultTableModel) item.getModel();
 
-        String ci,cn,ad,phn,eml,pc,cntry,obn,aas,orn,pfwa,sd,ed,dor="";
+        String ci,cn,ad,phn,eml,pc,cntry,obn,aas,orn,pfwa,sd,ed,pid,dor="";
         String rp,rsp,sp,sps,er,mop,pd,dosm,dosc,sts;
 
 
@@ -199,12 +204,13 @@ public class search extends javax.swing.JFrame {
              sps = rs.getString("sellingpriceshipping");
              er = rs.getString("earnings");
              mop = rs.getString("methododpayment");
-             pd = rs.getString("pickdate");
+             pd = rs.getString("dateofpayment");
              dosm = rs.getString("dosManufacuturer");
              dosc = rs.getString("dosCompany");
              sts = rs.getString("status");
+             pid = rs.getString("productid");
              model.addRow(new Object[] {ci,cn,ad,pc,phn,cntry,eml});
-             model2.addRow(new Object[] {obn,aas,orn,pfwa,sd,ed,dor,rp,rsp,sp,sps,er,mop,pd,dosm,dosc,sts});
+             model2.addRow(new Object[] {obn,aas,orn,pfwa,sd,ed,dor,rp,rsp,sp,sps,er,mop,pd,dosm,dosc,sts,pid});
 
          } else {
              JOptionPane.showMessageDialog(null, "Not found");
@@ -222,7 +228,7 @@ public class search extends javax.swing.JFrame {
         DefaultTableModel model = (DefaultTableModel) customerinfo.getModel();
         DefaultTableModel model2 = (DefaultTableModel) item.getModel();
 
-        String ci,cn,ad,phn,eml,pc,cntry,obn,aas,orn,pfwa,sd,ed,dor="";
+        String ci,cn,ad,phn,eml,pc,cntry,obn,aas,orn,pfwa,sd,ed,pid,dor="";
         String rp,rsp,sp,sps,er,mop,pd,dosm,dosc,sts;
 
 
@@ -253,12 +259,13 @@ public class search extends javax.swing.JFrame {
              sps = rs.getString("sellingpriceshipping");
              er = rs.getString("earnings");
              mop = rs.getString("methododpayment");
-             pd = rs.getString("pickdate");
+             pd = rs.getString("dateofpayment");
              dosm = rs.getString("dosManufacuturer");
              dosc = rs.getString("dosCompany");
              sts = rs.getString("status");
+             pid = rs.getString("productid");
              model.addRow(new Object[] {ci,cn,ad,pc,phn,cntry,eml});
-             model2.addRow(new Object[] {obn,aas,orn,pfwa,sd,ed,dor,rp,rsp,sp,sps,er,mop,pd,dosm,dosc,sts});
+             model2.addRow(new Object[] {obn,aas,orn,pfwa,sd,ed,dor,rp,rsp,sp,sps,er,mop,pd,dosm,dosc,sts,pid});
 
          } else {
              JOptionPane.showMessageDialog(null, "Not found");
@@ -268,6 +275,72 @@ public class search extends javax.swing.JFrame {
          System.out.println(e.getMessage());
      }
     }
+    
+    public void filtering(String ValueToSearch) {
+        
+        DefaultTableModel model = (DefaultTableModel) customerinfo.getModel();
+        DefaultTableModel model2 = (DefaultTableModel) item.getModel();
+        
+        if(filter.getText().equals("")) {
+            model.getDataVector().removeAllElements();
+            model.fireTableDataChanged();
+            model2.getDataVector().removeAllElements();
+            model2.fireTableDataChanged();
+            return;
+        }
+        if(filter.getText().equals("")) {
+            
+            return;
+        }
+   
+        model.setRowCount(0);
+        model2.setRowCount(0);
+
+
+    String id = "",name = "",pid="",address = "",pc = "",phn="",country = "",eml="",objno="",astore="",ornumber="",pfwa="",sd="",ed="",dor="",mop="",pd="",dosm="",dosc="",ss="";
+    int rp =0,sp =0,rps =0,sps =0,er =0;
+    try {
+        Connection con = (Connection) DriverManager.getConnection("jdbc:mysql://localhost/customerinfo","root","");
+        Statement st  = con.createStatement();
+        ResultSet rs;
+        String sqlQuery = "SELECT * FROM `cust_info` WHERE CONCAT(`customer id`, `customer name`, `address`, `postal code`, `phone`, `country`, `email`, `object number`, `auctionstore`, `ordernumber`, `pfwa`, `startdate`, `enddate`, `dateoforder`, `retailprice`, `retailpriceshipping`, `sellingprice`, `sellingpriceshipping`, `earnings`, `methododpayment`, `dateofpayment`, `dosManufacuturer`, `dosCompany`, `status`,'productid') LIKE '%"+ValueToSearch+"%'";
+        rs = st.executeQuery(sqlQuery);
+        while(rs.next()) {
+             id = rs.getString("customer id");
+             name = rs.getString("customer name");
+             address = rs.getString ("address");
+             pc = rs.getString("postal code");
+             phn = rs.getString("phone");
+             country = rs.getString("country");
+             eml = rs.getString("email");
+             objno = rs.getString("object number");
+             astore = rs.getString("auctionstore");
+             ornumber = rs.getString("ordernumber");
+             pfwa = rs.getString("pfwa");
+             sd = rs.getString("startdate");
+             ed = rs.getString("enddate");
+             dor = rs.getString("dateoforder");
+             rp = rs.getInt("retailprice");
+             rps = rs.getInt("retailpriceshipping");
+             sp = rs.getInt("sellingprice");
+             sps = rs.getInt("sellingpriceshipping");
+             er = rs.getInt("earnings");
+             mop = rs.getString("methododpayment");
+             pd = rs.getString("dateofpayment");
+             dosm = rs.getString("dosManufacuturer");
+             dosc  = rs.getString("dosCompany");
+             ss = rs.getString("status");
+             pid = rs.getString("productid");
+        model.addRow(new Object[] {id,name,address,pc,phn,country,eml});
+        model2.addRow(new Object[] {objno,astore,ornumber,pfwa,sd,ed,dor,rp,rps,sp,sps,er,mop,pd,dosm,dosc,ss,pid});
+
+        }
+
+    }catch(Exception e) {
+        JOptionPane.showMessageDialog(null,e.getMessage());
+    }
+    }
+
     
     
 
@@ -297,13 +370,14 @@ public class search extends javax.swing.JFrame {
         jButton3 = new javax.swing.JButton();
         filter = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
+        jButton4 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Search");
 
         jLabel1.setText("Search By:");
 
-        jcombo2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "customer id", "customer name", "object number", "ordernumber", "status", "auctionstore", "phone", "startdate", "enddate", "dateoforder", " " }));
+        jcombo2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "customer id", "customer name", "object number", "ordernumber", "status", "auctionstore", "phone", "startdate", "enddate", "dateoforder", "productid" }));
         jcombo2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jcombo2ActionPerformed(evt);
@@ -349,19 +423,19 @@ public class search extends javax.swing.JFrame {
 
             },
             new String [] {
-                "object No", "auction Store", "order No", "pfwa", "start date", "end date", "date of order", "retail price", "rps", "selling price", "sps", "earning", "MOP", "pick date", "DOS_M", "DOS_C", "Status"
+                "object No", "auction Store", "order No", "pfwa", "start date", "end date", "date of order", "retail price", "rps", "selling price", "sps", "earning", "MOP", "date of payment", "DOS_M", "DOS_C", "Status", "Product ID"
             }
         ));
         jScrollPane2.setViewportView(item);
 
-        jcombo3.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "customer id", "customer name", "object number", "ordernumber", "status", "auctionstore", "phone", "startdate", "enddate", "dateoforder", " " }));
+        jcombo3.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "customer id", "customer name", "object number", "ordernumber", "status", "auctionstore", "phone", "startdate", "enddate", "dateoforder", "productid", " " }));
         jcombo3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jcombo3ActionPerformed(evt);
             }
         });
 
-        jcombo4.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "customer id", "customer name", "object number", "ordernumber", "status", "auctionstore", "phone", "startdate", "enddate", "dateoforder", " " }));
+        jcombo4.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "customer id", "customer name", "object number", "ordernumber", "status", "auctionstore", "phone", "startdate", "enddate", "dateoforder", "productid", " " }));
         jcombo4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jcombo4ActionPerformed(evt);
@@ -394,6 +468,11 @@ public class search extends javax.swing.JFrame {
             }
         });
 
+        filter.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                filterActionPerformed(evt);
+            }
+        });
         filter.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 filterKeyReleased(evt);
@@ -402,48 +481,54 @@ public class search extends javax.swing.JFrame {
 
         jLabel2.setText("Filter:");
 
+        jButton4.setText("Clear Table");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
                         .addComponent(jLabel2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(filter, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 1091, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
+                        .addGap(0, 89, Short.MAX_VALUE)
+                        .addComponent(jLabel1)
+                        .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(0, 100, Short.MAX_VALUE)
-                                .addComponent(jLabel1)
+                                .addComponent(jcombo2, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(key, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(jButton1))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jcombo3, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(key1, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(jButton2))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jcombo4, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(key2, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(jcombo2, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(key, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(jButton1))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(jcombo4, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(key2, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(jButton3))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(jcombo3, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(key1, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(jButton2)))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 739, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(0, 12, Short.MAX_VALUE))
-                            .addComponent(jScrollPane2))))
+                                    .addComponent(jButton4)
+                                    .addComponent(jButton3))))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 739, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 1, Short.MAX_VALUE))
+                    .addComponent(jScrollPane2))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -451,6 +536,12 @@ public class search extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(7, 7, 7)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(filter, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel2)))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel1)
@@ -466,12 +557,9 @@ public class search extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jButton3)
                             .addComponent(jcombo4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(key2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(7, 7, 7)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(filter, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel2))
+                            .addComponent(key2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jButton4)))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 267, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(137, Short.MAX_VALUE))
@@ -532,9 +620,21 @@ public class search extends javax.swing.JFrame {
 //        String key = filter.getText().toLowerCase();
 //        filter(key);
 
-        String key = filter.getText();
+        String key = filter.getText().trim();
         filtering(key);
     }//GEN-LAST:event_filterKeyReleased
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        DefaultTableModel model = (DefaultTableModel) customerinfo.getModel();
+        DefaultTableModel model2 = (DefaultTableModel) item.getModel();
+        
+        model.setRowCount(0);
+        model2.setRowCount(0);
+    }//GEN-LAST:event_jButton4ActionPerformed
+
+    private void filterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_filterActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_filterActionPerformed
 
     /**
      * @param args the command line arguments
@@ -578,6 +678,7 @@ public class search extends javax.swing.JFrame {
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
+    private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;

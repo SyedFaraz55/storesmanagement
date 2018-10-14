@@ -8,12 +8,26 @@ package stores.management;
 import com.mysql.jdbc.Connection;
 import com.sun.glass.events.KeyEvent;
 import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Image;
+import java.awt.Toolkit;
+import java.io.IOException;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import stores.management.dao.*;
+import stores.management.dbcon.DataBaseConnection;
+import stores.management.entity.*;
+import stores.management.dao.ProductDao;
 
 /**
  *
@@ -26,9 +40,34 @@ public class Place_an_order extends javax.swing.JFrame {
      */
     public Place_an_order() {
         initComponents();
+     
     
     }
     
+{
+    
+}
+    
+   
+    
+    
+    private void fillTable(String sName) throws IOException {
+        try {
+            long id = Long.parseLong(productid.getText());
+        ProductDao pDao = new ProductDao();
+        Product p = pDao.get(id);
+            if(p.getPhoto1() != null && p.getPhoto1().getPhoto() != null) {
+                Image image = ImageIO.read(p.getPhoto1().getPhoto());
+            ImageIcon icon = new ImageIcon(image);
+            imagePreview.setIcon(new ImageIcon(icon.getImage().getScaledInstance(imagePreview.getWidth(),
+                    imagePreview.getHeight(), Image.SCALE_SMOOTH)));
+            }
+        }catch(Exception e) {
+            JOptionPane.showMessageDialog(null,"Invalid Id or this item doesn't exits...");
+        }
+        
+        
+    }
     public boolean validation() {
         if(email.getText().contains("@")) {
             return true;
@@ -116,12 +155,13 @@ public class Place_an_order extends javax.swing.JFrame {
         String dom = dos_m.getDate().toString();
         String dos = dos_c.getDate().toString();
         int ssps = Integer.parseInt(sps.getText());
+        String pid = productid.getText();
         
         
             //Creating object for database class
         DBConnection dbObject = new DBConnection(); 
         dbObject.createConnection("jdbc:mysql://localhost/customerinfo", "root", "");
-        dbObject.addData(id, name, add, pc, no, cntry, eml, objectno, aastore, ordern, pfw, start_date, end_date, date_of_order, reprice, rpps, sellingp, ssps, earning, mopp, pickdate, dom, dos, paymentSts);
+        dbObject.addData(id, name, add, pc, no, cntry, eml, objectno, aastore, ordern, pfw, start_date, end_date, date_of_order, reprice, rpps, sellingp, ssps, earning, mopp, pickdate, dom, dos, paymentSts,pid);
         
         
         
@@ -323,6 +363,10 @@ public class Place_an_order extends javax.swing.JFrame {
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
+        jLabel27 = new javax.swing.JLabel();
+        productid = new javax.swing.JTextField();
+        imagePreview = new javax.swing.JLabel();
+        getProduct = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Place Order");
@@ -511,6 +555,12 @@ public class Place_an_order extends javax.swing.JFrame {
 
         jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder("Item Information"));
 
+        mop.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mopActionPerformed(evt);
+            }
+        });
+
         jLabel18.setText("Selling Price Shipping:");
 
         retailP.addActionListener(new java.awt.event.ActionListener() {
@@ -563,7 +613,7 @@ public class Place_an_order extends javax.swing.JFrame {
 
         jLabel20.setText("Medthod Of Payment:");
 
-        jLabel21.setText("Pick Date:");
+        jLabel21.setText("Date Of Payment:");
 
         sp.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
@@ -858,6 +908,19 @@ public class Place_an_order extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
+        jLabel27.setText("Product Id:");
+
+        imagePreview.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        imagePreview.setText("Image");
+        imagePreview.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+
+        getProduct.setText("Get Product");
+        getProduct.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                getProductActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -867,20 +930,42 @@ public class Place_an_order extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(113, 113, 113)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel24)
-                            .addComponent(jLabel26))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(113, 113, 113)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel24)
+                                    .addComponent(jLabel26)))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(18, 18, 18)
+                                .addComponent(jLabel27)
+                                .addGap(18, 18, 18)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(productid, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(getProduct))
+                                    .addComponent(imagePreview, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE))))
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGap(256, 256, 256))))
+                        .addGap(206, 206, 206))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(21, 21, 21)
-                .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(21, 21, 21)
+                        .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(27, 27, 27)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel27)
+                            .addComponent(productid, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(getProduct))
+                        .addGap(24, 24, 24)
+                        .addComponent(imagePreview, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel24)
@@ -920,7 +1005,7 @@ public class Place_an_order extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
       try {
       if(customerid.getText().equals(" ") || phonenumber.getText().equals("") || email.getText().equals("") || retailP.getText().equals("") 
-               || sp.getText().equals("")||rps.getText().equals("")||sps.getText().equals(""))
+               || sp.getText().equals("")||rps.getText().equals("")||sps.getText().equals("")||productid.getText().equals(""))
       {
           JOptionPane.showMessageDialog(null, "Please fill all fields !");
       } else {
@@ -1089,6 +1174,22 @@ public class Place_an_order extends javax.swing.JFrame {
        calculateEarning();
     }//GEN-LAST:event_spsFocusLost
 
+    private void getProductActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_getProductActionPerformed
+        String searchName = productid.getText();
+        if(searchName == null || searchName.equals("")) return;
+        try {
+            fillTable(searchName);
+        } catch (IOException ex) {
+            JOptionPane.showMessageDialog(null,ex.getMessage());
+        }
+       
+        
+    }//GEN-LAST:event_getProductActionPerformed
+
+    private void mopActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mopActionPerformed
+       
+    }//GEN-LAST:event_mopActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -1140,6 +1241,8 @@ public class Place_an_order extends javax.swing.JFrame {
     private javax.swing.JTextField email;
     private com.toedter.calendar.JDateChooser enddate;
     private javax.swing.JTextField er;
+    private javax.swing.JButton getProduct;
+    private javax.swing.JLabel imagePreview;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
@@ -1163,6 +1266,7 @@ public class Place_an_order extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel24;
     private javax.swing.JLabel jLabel25;
     private javax.swing.JLabel jLabel26;
+    private javax.swing.JLabel jLabel27;
     private javax.swing.JLabel jLabel28;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -1186,6 +1290,7 @@ public class Place_an_order extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> pfwa;
     private javax.swing.JTextField phonenumber;
     private javax.swing.JTextField postalcode;
+    private javax.swing.JTextField productid;
     private javax.swing.JTextField retailP;
     private javax.swing.JTextField rps;
     private javax.swing.JTextField sp;
