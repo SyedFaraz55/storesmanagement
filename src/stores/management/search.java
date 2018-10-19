@@ -127,7 +127,7 @@ public class search extends javax.swing.JFrame {
          ResultSet rs;
          String mysqlQuery = "SELECT * FROM `cust_info` WHERE `"+column+"` ='"+value+"'";
          rs =st.executeQuery(mysqlQuery);
-         if(rs.next() && rs.getInt(1) !=0) {
+         while(rs.next()) {
              ci = rs.getString("customer id");
              cn = rs.getString("customer name");
              ad = rs.getString("address");
@@ -153,12 +153,11 @@ public class search extends javax.swing.JFrame {
              dosc = rs.getString("dosCompany");
              sts = rs.getString("status");
              pid = rs.getString("productid");
+             
              model.addRow(new Object[] {ci,cn,ad,pc,phn,cntry,eml});
              model2.addRow(new Object[] {obn,aas,orn,pfwa,sd,ed,dor,rp,rsp,sp,sps,er,mop,pd,dosm,dosc,sts,pid});
-
-         } else {
-             JOptionPane.showMessageDialog(null, "Not found");
-         }
+         } 
+         
 
      }catch(Exception e) {
          System.out.println(e.getMessage());
@@ -183,7 +182,7 @@ public class search extends javax.swing.JFrame {
          ResultSet rs;
          String mysqlQuery = "SELECT * FROM `cust_info` WHERE `"+column+"` ='"+value+"'";
          rs =st.executeQuery(mysqlQuery);
-         if(rs.next() && rs.getInt(1) !=0) {
+         while(rs.next()) {
              ci = rs.getString("customer id");
              cn = rs.getString("customer name");
              ad = rs.getString("address");
@@ -212,9 +211,7 @@ public class search extends javax.swing.JFrame {
              model.addRow(new Object[] {ci,cn,ad,pc,phn,cntry,eml});
              model2.addRow(new Object[] {obn,aas,orn,pfwa,sd,ed,dor,rp,rsp,sp,sps,er,mop,pd,dosm,dosc,sts,pid});
 
-         } else {
-             JOptionPane.showMessageDialog(null, "Not found");
-         }
+         } 
 
      }catch(Exception e) {
          System.out.println(e.getMessage());
@@ -574,7 +571,9 @@ public class search extends javax.swing.JFrame {
     }//GEN-LAST:event_jcombo2ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        Search();
+       Search();
+    
+        
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void keyKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_keyKeyPressed
