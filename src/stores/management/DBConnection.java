@@ -47,8 +47,8 @@ public class DBConnection {
      
  }
  
- public void addData(String id,String cname,String address,String pcode,String phone,String country,String email,String objectno,String astore,String ordern,String pfw,String sd,String ed, String door, int reprice, int rpps, int sellingp,
- int ssps,int earning, String mopp, String pickdate, String dom, String dos, String paymentSts,String pid) {
+ public void addData(String id,String cname,String address,String pcode,String phone,String country,String email,String objectno,String astore,String ordern,String pfw,Date sd,Date ed, Date door, int reprice, int rpps, int sellingp,
+ int ssps,int earning, String mopp, Date pickdate, Date dom, Date dos, String paymentSts,String pid) {
      try {
          Connection conn = (Connection) DriverManager.getConnection(URI, USERNAME, PASSWORD);
          Statement st  = conn.createStatement();

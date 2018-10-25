@@ -21,7 +21,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-
+import java.sql.*;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -44,8 +44,8 @@ public class Place_an_order extends javax.swing.JFrame {
      * Creates new form Place_an_order
      */
     
-    java.util.Date date;
-    java.sql.Date sqldate;
+    java.util.Date date,date2,date3,date4,date5,date6;
+    java.sql.Date sqldate,sqldate2,sqldate3,sqldate4,sqldate5,sqldate6;
     public Place_an_order() {
         initComponents();
      
@@ -144,30 +144,32 @@ public class Place_an_order extends javax.swing.JFrame {
         String aastore = auctionstorebox.getSelectedItem().toString();
         String ordern = ordernumber.getText();
         String pfw = pfwa.getSelectedItem().toString();
-        String sd = startdate.getDate().toString();
-        String sd1 = sd.substring(0,10);
-        String sd2 = sd.substring(24,28);
-        String start_date = sd1.concat(" " + sd2);
-//        java.util.Date date2 = new SimpleDateFormat("yyyy-MM-dd").parse(sd);
-//        test.setDate(date2);
-        System.out.println(sd1.concat(" " + sd2));
-        String ed = enddate.getDate().toString();
-        String ed1 = ed.substring(0,10);
-        String ed2 = ed.substring(24,28);
-        String end_date = ed1.concat(" " + ed2);
-        System.out.println(ed1.concat(" " + ed2));
-        String door = dateoforder.getDate().toString();
-        String door1 = door.substring(0,10);
-        String door2 = door.substring(24,28);
-        String date_of_order = door1.concat(" " + door2);
+        
+        date = startdate.getDate();
+        sqldate = new java.sql.Date(date.getTime());
+        
+       date2  = enddate.getDate();
+       sqldate2 = new java.sql.Date(date2.getTime());
+       
+       date3 = dateoforder.getDate();
+       sqldate3 = new java.sql.Date(date3.getTime());
+       
+       date4 = pd.getDate();
+       sqldate4 = new java.sql.Date(date4.getTime());
+       
+       date5 = dos_m.getDate();
+       sqldate5 = new java.sql.Date(date5.getTime());
+       
+       date6 = dos_c.getDate();
+       sqldate6 = new java.sql.Date(date6.getTime());
+        
         int reprice =Integer.parseInt(retailP.getText());
         String mopp = mop.getSelectedItem().toString();
         int rpps = Integer.parseInt(rps.getText());
-        String pickdate = pd.getDate().toString();
+    
         int sellingp = Integer.parseInt(sp.getText());
         int earning = Integer.parseInt(er.getText());
-        String dom = dos_m.getDate().toString();
-        String dos = dos_c.getDate().toString();
+        
         int ssps = Integer.parseInt(sps.getText());
         String pid = productid.getText();
         
@@ -175,7 +177,7 @@ public class Place_an_order extends javax.swing.JFrame {
             //Creating object for database class
         DBConnection dbObject = new DBConnection(); 
         dbObject.createConnection("jdbc:mysql://localhost/customerinfo", "root", "");
-        dbObject.addData(id, name, add, pc, no, cntry, eml, objectno, aastore, ordern, pfw, start_date, end_date, date_of_order, reprice, rpps, sellingp, ssps, earning, mopp, pickdate, dom, dos, paymentSts,pid);
+        dbObject.addData(id, name, add, pc, no, cntry, eml, objectno, aastore, ordern, pfw, sqldate, sqldate2, sqldate3, reprice, rpps, sellingp, ssps, earning, mopp, sqldate4, sqldate5, sqldate6, paymentSts,pid);
         
         
         
@@ -243,7 +245,7 @@ public class Place_an_order extends javax.swing.JFrame {
               jcombo1.addItem(id);
          }
      }catch(Exception e) {
-         JOptionPane.showMessageDialog(null,"Not Connected To Database");
+         msg.setText("Not Connected to Database !");
      }
     }
     
@@ -260,7 +262,7 @@ public class Place_an_order extends javax.swing.JFrame {
               auctionstorebox.addItem(id);
          }
      }catch(Exception e) {
-         JOptionPane.showMessageDialog(null,"Not Connected To Database");
+         msg.setText("not connected to Database");
      }
     }
     
@@ -277,7 +279,7 @@ public class Place_an_order extends javax.swing.JFrame {
               mop.addItem(id);
          }
      }catch(Exception e) {
-         JOptionPane.showMessageDialog(null,"Not Connected To Database");
+         msg.setText("Not Connected To Database");
      }
     }
     public void addAccounts() {
@@ -293,7 +295,7 @@ public class Place_an_order extends javax.swing.JFrame {
               pfwa.addItem(id);
          }
      }catch(Exception e) {
-         JOptionPane.showMessageDialog(null,"Not Connected To Database");
+         msg.setText("Not Connected To Database");
      }
     }
     
@@ -381,6 +383,7 @@ public class Place_an_order extends javax.swing.JFrame {
         productid = new javax.swing.JTextField();
         imagePreview = new javax.swing.JLabel();
         getProduct = new javax.swing.JButton();
+        msg = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Place Order");
@@ -536,7 +539,7 @@ public class Place_an_order extends javax.swing.JFrame {
                     .addComponent(phonenumber, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(address, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel2))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(15, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
@@ -966,13 +969,18 @@ public class Place_an_order extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGap(223, 223, 223))))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(310, 310, 310)
+                .addComponent(msg, javax.swing.GroupLayout.PREFERRED_SIZE, 213, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(21, 21, 21)
+                        .addComponent(msg, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(27, 27, 27)
@@ -980,7 +988,7 @@ public class Place_an_order extends javax.swing.JFrame {
                             .addComponent(jLabel27)
                             .addComponent(productid, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(getProduct))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 27, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(imagePreview, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1291,6 +1299,7 @@ public class Place_an_order extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel5;
     private javax.swing.JComboBox<String> jcombo1;
     private javax.swing.JComboBox<String> mop;
+    private javax.swing.JLabel msg;
     private javax.swing.JTextField objectnumber;
     private javax.swing.JTextField ordernumber;
     private javax.swing.JRadioButton paid;

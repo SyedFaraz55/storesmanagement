@@ -229,18 +229,18 @@ public class update extends javax.swing.JFrame {
                  String astore = rs.getString("auctionstore");
                  String ornumber = rs.getString("ordernumber");
                  String pfwa = rs.getString("pfwa");
-                 String sd = rs.getString("startdate");
-                 String ed = rs.getString("enddate");
-                 String dor = rs.getString("dateoforder");
+                 Date sd = rs.getDate("startdate");
+                 Date ed = rs.getDate("enddate");
+                 Date dor = rs.getDate("dateoforder");
                  int rp = rs.getInt("retailprice");
                  int rps = rs.getInt("retailpriceshipping");
                  int sp = rs.getInt("sellingprice");
                  int sps = rs.getInt("sellingpriceshipping");
                  int er = rs.getInt("earnings");
                  String mop = rs.getString("methododpayment");
-                 String pd = rs.getString("dateofpayment");
-                 String dosm = rs.getString("dosManufacuturer");
-                 String dosc  = rs.getString("dosCompany");
+                 Date pdd = rs.getDate("dateofpayment");
+                 Date dosm = rs.getDate("dosManufacuturer");
+                 Date dosc  = rs.getDate("dosCompany");
                  String ss = rs.getString("status");
                  String pid = rs.getString("productid");
                  customername.setText(name);
@@ -249,7 +249,12 @@ public class update extends javax.swing.JFrame {
                  phonenumber.setText(phn);
                  postalcode.setText(pc);
                  address.setText(add);
-                 
+                 objectnumber.setText(objno);
+                 ordernumber.setText(ornumber);
+                 startdate.setDate(sd);
+                 enddate.setDate(ed);
+                 dateoforder.setDate(dor);
+                 pd.setDate(pdd);
             }
            
         }catch(Exception e) {
