@@ -25,11 +25,13 @@ public class update extends javax.swing.JFrame {
     /**
      * Creates new form update
      */
+    java.util.Date date,date2,date3,date4,date5,date6,ex;
+    java.sql.Date sqldate,sqldate2,sqldate3,sqldate4,sqldate5,sqldate6,ex2;
      public String paymentSts;
     public update() {
         initComponents();
     }
-    public void calculateEarning() {
+/*    public void calculateEarning() {
         try {
             int retailprice = Integer.parseInt(retailP.getText());
             int retailshippingprice = Integer.parseInt(rps.getText());
@@ -41,12 +43,12 @@ public class update extends javax.swing.JFrame {
             earning = x - y;
             int earnings = Math.abs(earning);
             String erngs = Integer.toString(earnings);
-            er.setText(erngs); 
+            earnings.setText(erngs); 
         }catch(Exception e) {
             JOptionPane.showMessageDialog(null,"please check the empty fields !");
         }
         
-    }
+    }*/
     public void clearFields() {
         customerid.setText("");;
         address.setText("");
@@ -61,7 +63,13 @@ public class update extends javax.swing.JFrame {
         rps.setText("");
         sps.setText("");
         sp.setText("");
-        er.setText("");
+        totalEaring.setText("");
+        startdate.setCalendar(null);
+        enddate.setCalendar(null);
+        dateoforder.setCalendar(null);
+        pd.setCalendar(null);
+        dos_m.setCalendar(null);
+        dos_c.setCalendar(null);
         
     }
     
@@ -77,35 +85,47 @@ public class update extends javax.swing.JFrame {
         String aastore = auctionstorebox.getSelectedItem().toString();
         String ordern = ordernumber.getText();
         String pfw = pfwa.getSelectedItem().toString();
-        String sd = startdate.getDate().toString();
-        String sd1 = sd.substring(0,10);
-        String sd2 = sd.substring(24,28);
-        String start_date = sd1.concat(" " + sd2);
-        System.out.println(sd1.concat(" " + sd2));
-        String ed = enddate.getDate().toString();
-        String ed1 = ed.substring(0,10);
-        String ed2 = ed.substring(24,28);
-        String end_date = ed1.concat(" " + ed2);
-        System.out.println(ed1.concat(" " + ed2));
-        String door = dateoforder.getDate().toString();
-        String door1 = door.substring(0,10);
-        String door2 = door.substring(24,28);
-        String date_of_order = door1.concat(" " + door2);
+        Date sd = startdate.getDate();
+        
+        Date ed  = enddate.getDate();
+        Date door = dateoforder.getDate();
+        
         int reprice =Integer.parseInt(retailP.getText());
         String mopp = mop.getSelectedItem().toString();
         int rpps = Integer.parseInt(rps.getText());
-        String pickdate = pd.getDate().toString();
+        Date pickdate = pd.getDate();
         int sellingp = Integer.parseInt(sp.getText());
-        int earning = Integer.parseInt(er.getText());
-        String dom = dos_m.getDate().toString();
-        String dos = dos_c.getDate().toString();
+        int earning = Integer.parseInt(totalEaring.getText());
+        Date dom = dos_m.getDate();
+        Date dos = dos_c.getDate();
         int ssps = Integer.parseInt(sps.getText());
+        
+        date = startdate.getDate();
+        sqldate = new java.sql.Date(date.getTime());
+        
+       date2  = enddate.getDate();
+       sqldate2 = new java.sql.Date(date2.getTime());
+       
+       date3 = dateoforder.getDate();
+       sqldate3 = new java.sql.Date(date3.getTime());
+       
+       date4 = pd.getDate();
+       sqldate4 = new java.sql.Date(date4.getTime());
+       
+       date5 = dos_m.getDate();
+       sqldate5 = new java.sql.Date(date5.getTime());
+       
+       date6 = dos_c.getDate();
+       sqldate6 = new java.sql.Date(date6.getTime());
+       
+       
         
         
         
             //Creating object for database class
         DBConnection dbObject = new DBConnection(); 
-        dbObject.createConnection("jdbc:mysql://localhost/customerinfo", "root", "");
+        dbObject.update(id,name, add, pc, mopp, cntry, eml, objectno, aastore, ordern, pfw, sqldate, sqldate2, sqldate3, reprice, rpps, sellingp, ssps, earning, mopp, sqldate4, sqldate5, sqldate6, paymentSts, id);
+        
         
         
         
@@ -217,7 +237,8 @@ public class update extends javax.swing.JFrame {
             ResultSet rs;
             String mysqlQuery = "SELECT * FROM `cust_info` WHERE `customer id` ='"+id+"'";
             rs = st.executeQuery(mysqlQuery);
-            while(rs.next()) {
+            if(rs.next()) {
+                    String idd = rs.getString("customer id");
                  
                  String name = rs.getString("customer name");
                  String add = rs.getString ("address");
@@ -233,9 +254,9 @@ public class update extends javax.swing.JFrame {
                  Date ed = rs.getDate("enddate");
                  Date dor = rs.getDate("dateoforder");
                  int rp = rs.getInt("retailprice");
-                 int rps = rs.getInt("retailpriceshipping");
-                 int sp = rs.getInt("sellingprice");
-                 int sps = rs.getInt("sellingpriceshipping");
+                 int rpss = rs.getInt("retailpriceshipping");
+                 int spp = rs.getInt("sellingprice");
+                 int spss = rs.getInt("sellingpriceshipping");
                  int er = rs.getInt("earnings");
                  String mop = rs.getString("methododpayment");
                  Date pdd = rs.getDate("dateofpayment");
@@ -255,10 +276,39 @@ public class update extends javax.swing.JFrame {
                  enddate.setDate(ed);
                  dateoforder.setDate(dor);
                  pd.setDate(pdd);
-            }
+                 dos_m.setDate(dosm);
+                 dos_c.setDate(dosc);
+                 sts.setText(ss);
+                 String rpp = Integer.toString(rp);
+                 String sppP = Integer.toString(spp);
+                 String rppS = Integer.toString(rpss);
+                 String sppS = Integer.toString(spss);
+                 String err = Integer.toString(er);
+                 
+                 retailP.setText(rpp);
+                 rps.setText(rppS);
+                 sp.setText(sppP);
+                 sps.setText(sppS);
+                 totalEaring.setText(err);
+                 
+                 if(ss.equals("paid")) {
+                     paid.setSelected(true);
+                 } else if(ss.equals("unpaid")) {
+                     unpaid.setSelected(true);
+                 } else if(ss.equals("completed")) {
+                     completed.setSelected(true);
+                 } else if(ss.equals("pending")) {
+                     pending.setSelected(true);
+                 }
+                 
            
-        }catch(Exception e) {
+                 }else {
+                     JOptionPane.showMessageDialog(null,"Not Found.");
+                 }
             
+    
+        }catch(Exception e) {
+            JOptionPane.showMessageDialog(null,e.getMessage());
         }
          
     }
@@ -278,6 +328,8 @@ public class update extends javax.swing.JFrame {
         customerid = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
         jButton3 = new javax.swing.JButton();
+        jcombo1 = new javax.swing.JComboBox<>();
+        jLabel8 = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
@@ -314,7 +366,7 @@ public class update extends javax.swing.JFrame {
         jLabel12 = new javax.swing.JLabel();
         jLabel15 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
-        er = new javax.swing.JTextField();
+        totalEaring = new javax.swing.JTextField();
         ordernumber = new javax.swing.JTextField();
         jLabel13 = new javax.swing.JLabel();
         jLabel11 = new javax.swing.JLabel();
@@ -331,12 +383,8 @@ public class update extends javax.swing.JFrame {
         pending = new javax.swing.JRadioButton();
         jLabel25 = new javax.swing.JLabel();
         sts = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
+        update = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
-        jcombo1 = new javax.swing.JComboBox<>();
-        jLabel8 = new javax.swing.JLabel();
-        jButton4 = new javax.swing.JButton();
-        test = new com.toedter.calendar.JDateChooser();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Update");
@@ -370,6 +418,15 @@ public class update extends javax.swing.JFrame {
             }
         });
 
+        jcombo1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { " " }));
+        jcombo1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jcombo1ActionPerformed(evt);
+            }
+        });
+
+        jLabel8.setText("ID's");
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -381,7 +438,11 @@ public class update extends javax.swing.JFrame {
                 .addComponent(customerid, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton3)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel8)
+                .addGap(18, 18, 18)
+                .addComponent(jcombo1, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -390,7 +451,9 @@ public class update extends javax.swing.JFrame {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
                     .addComponent(customerid, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton3))
+                    .addComponent(jButton3)
+                    .addComponent(jcombo1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel8))
                 .addContainerGap())
         );
 
@@ -403,6 +466,11 @@ public class update extends javax.swing.JFrame {
         postalcode.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 postalcodeActionPerformed(evt);
+            }
+        });
+        postalcode.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                postalcodeKeyTyped(evt);
             }
         });
 
@@ -521,6 +589,7 @@ public class update extends javax.swing.JFrame {
 
         jLabel18.setText("Selling Price Shipping:");
 
+        retailP.setEditable(false);
         retailP.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 retailPActionPerformed(evt);
@@ -544,6 +613,7 @@ public class update extends javax.swing.JFrame {
 
         jLabel9.setText("Auction Store:");
 
+        rps.setEditable(false);
         rps.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 rpsKeyTyped(evt);
@@ -554,6 +624,7 @@ public class update extends javax.swing.JFrame {
 
         jLabel10.setText("Order Number:");
 
+        sps.setEditable(false);
         sps.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusLost(java.awt.event.FocusEvent evt) {
                 spsFocusLost(evt);
@@ -573,6 +644,7 @@ public class update extends javax.swing.JFrame {
 
         jLabel21.setText("Date Of Payment:");
 
+        sp.setEditable(false);
         sp.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 spKeyTyped(evt);
@@ -593,10 +665,10 @@ public class update extends javax.swing.JFrame {
 
         jLabel7.setText("Object Number:");
 
-        er.setEditable(false);
-        er.addKeyListener(new java.awt.event.KeyAdapter() {
+        totalEaring.setEditable(false);
+        totalEaring.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyTyped(java.awt.event.KeyEvent evt) {
-                erKeyTyped(evt);
+                totalEaringKeyTyped(evt);
             }
         });
 
@@ -684,10 +756,10 @@ public class update extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
-        jButton1.setText("Update");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        update.setText("Update");
+        update.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                updateActionPerformed(evt);
             }
         });
 
@@ -745,7 +817,7 @@ public class update extends javax.swing.JFrame {
                             .addComponent(dateoforder, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(er, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(totalEaring, javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(sps, javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(sp, javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(rps, javax.swing.GroupLayout.Alignment.LEADING)
@@ -773,7 +845,7 @@ public class update extends javax.swing.JFrame {
                                 .addGap(18, 18, 18)
                                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 121, Short.MAX_VALUE))
+                                    .addComponent(update, javax.swing.GroupLayout.DEFAULT_SIZE, 121, Short.MAX_VALUE))
                                 .addGap(29, 29, 29)))))
                 .addContainerGap())
         );
@@ -843,29 +915,13 @@ public class update extends javax.swing.JFrame {
                         .addComponent(jButton2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jButton1)
+                            .addComponent(update)
                             .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                 .addComponent(jLabel19)
-                                .addComponent(er, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addComponent(totalEaring, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(45, Short.MAX_VALUE))
         );
-
-        jcombo1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { " " }));
-        jcombo1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jcombo1ActionPerformed(evt);
-            }
-        });
-
-        jLabel8.setText("ID's");
-
-        jButton4.setText("Date");
-        jButton4.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton4ActionPerformed(evt);
-            }
-        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -875,41 +931,18 @@ public class update extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
+                        .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addContainerGap())
+                    .addGroup(layout.createSequentialGroup()
                         .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(18, 18, 18)
-                                .addComponent(jLabel8)
-                                .addGap(41, 41, 41)
-                                .addComponent(jcombo1, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(51, 51, 51)
-                                .addComponent(jButton4))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(71, 71, 71)
-                                .addComponent(test, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap())
+                        .addGap(0, 361, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(57, 57, 57)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jcombo1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel8))
-                        .addGap(64, 64, 64)
-                        .addComponent(jButton4)
-                        .addGap(58, 58, 58)
-                        .addComponent(test, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                .addContainerGap()
+                .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(70, 70, 70))
         );
@@ -1008,7 +1041,7 @@ public class update extends javax.swing.JFrame {
     }//GEN-LAST:event_rpsKeyTyped
 
     private void spsFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_spsFocusLost
-        calculateEarning();
+//        calculateEarning();
     }//GEN-LAST:event_spsFocusLost
 
     private void spsKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_spsKeyTyped
@@ -1032,12 +1065,12 @@ public class update extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_objectnumberKeyTyped
 
-    private void erKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_erKeyTyped
+    private void totalEaringKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_totalEaringKeyTyped
         char c = evt.getKeyChar();
         if(!(Character.isDigit(c) || (c==KeyEvent.VK_BACKSPACE) || c==KeyEvent.VK_DELETE)) {
             evt.consume();
         }
-    }//GEN-LAST:event_erKeyTyped
+    }//GEN-LAST:event_totalEaringKeyTyped
 
     private void ordernumberActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ordernumberActionPerformed
         // TODO add your handling code here:
@@ -1052,26 +1085,36 @@ public class update extends javax.swing.JFrame {
 
     private void paidActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_paidActionPerformed
         paymentSts = "paid";
-        System.out.println(paymentSts);
+        unpaid.setSelected(false);
+        completed.setSelected(false);
+        pending.setSelected(false);
+        
     }//GEN-LAST:event_paidActionPerformed
 
     private void unpaidActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_unpaidActionPerformed
         paymentSts = "unpaid";
-        System.out.println(paymentSts);
+        paid.setSelected(false);
+        completed.setSelected(false);
+        pending.setSelected(false);
     }//GEN-LAST:event_unpaidActionPerformed
 
     private void completedActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_completedActionPerformed
         paymentSts = "Completed";
-        System.out.println(paymentSts);
+        paid.setSelected(false);
+        pending.setSelected(false);
+        unpaid.setSelected(false);
+        
     }//GEN-LAST:event_completedActionPerformed
 
     private void pendingActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pendingActionPerformed
         paymentSts = "pending";
-        System.out.println(paymentSts);
+        paid.setSelected(false);
+        unpaid.setSelected(false);
+        completed.setSelected(false);
     }//GEN-LAST:event_pendingActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        try {
+    private void updateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateActionPerformed
+       try {
             if(customerid.getText().equals(" ") || phonenumber.getText().equals("") || email.getText().equals("") || retailP.getText().equals("")
                 || sp.getText().equals("")||rps.getText().equals("")||sps.getText().equals(""))
             {
@@ -1084,7 +1127,7 @@ public class update extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null,"All fields are required to save...");
         }
 
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_updateActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         clearFields();
@@ -1096,15 +1139,19 @@ public class update extends javax.swing.JFrame {
         auctionstores();
         paymethods();
         addAccounts();
+        
     }//GEN-LAST:event_formWindowOpened
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
     searchUpdate();
     }//GEN-LAST:event_jButton3ActionPerformed
 
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-       datefunction();
-    }//GEN-LAST:event_jButton4ActionPerformed
+    private void postalcodeKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_postalcodeKeyTyped
+        char c = evt.getKeyChar();
+        if(!(Character.isDigit(c) || (c==KeyEvent.VK_BACKSPACE) || c==KeyEvent.VK_DELETE)) {
+            evt.consume();
+        }
+    }//GEN-LAST:event_postalcodeKeyTyped
 
     /**
      * @param args the command line arguments
@@ -1153,11 +1200,8 @@ public class update extends javax.swing.JFrame {
     private com.toedter.calendar.JDateChooser dos_m;
     private javax.swing.JTextField email;
     private com.toedter.calendar.JDateChooser enddate;
-    private javax.swing.JTextField er;
-    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -1204,7 +1248,8 @@ public class update extends javax.swing.JFrame {
     private javax.swing.JTextField sps;
     private com.toedter.calendar.JDateChooser startdate;
     private javax.swing.JLabel sts;
-    private com.toedter.calendar.JDateChooser test;
+    private javax.swing.JTextField totalEaring;
     private javax.swing.JRadioButton unpaid;
+    private javax.swing.JButton update;
     // End of variables declaration//GEN-END:variables
 }

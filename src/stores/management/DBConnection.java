@@ -97,6 +97,22 @@ public class DBConnection {
      }
          return values;
  }
+ public void update(String id,String cname,String address,String pcode,String phone,String country,String email,String objectno,String astore,String ordern,String pfw,Date sd,Date ed, Date door, int reprice, int rpps, int sellingp,
+ int ssps,int earning, String mopp, Date pickdate, Date dom, Date dos, String paymentSts,String pid) {
+     
+     try {
+         Connection con = (Connection) DriverManager.getConnection("jdbc:mysql://localhost/customerinfo","root","");
+         Statement st = con.createStatement();
+         String mysql = "UPDATE `cust_info` SET `customer name`= '"+cname+"',`address`= '"+address+"',`postal code`= '"+pcode+"',`phone`= '"+phone+"',`country`= '"+country+"',`email`= '"+email+"',`object number`= '"+objectno+"',`auctionstore`= '"+astore+"',`ordernumber`= '"+ordern+"',"
+                 + "`pfwa`= '"+pfw+"',`startdate`= '"+sd+"',`enddate`= '"+ed+"',`dateoforder`= '"+door+"',`methododpayment`= '"+mopp+"',`dateofpayment`= '"+pickdate+"',`dosManufacuturer`= '"+dom+"',`dosCompany`= '"+dos+"',`status`= '"+paymentSts+"' WHERE `customer id`='"+id+"'";
+         st.executeUpdate(mysql);
+         JOptionPane.showMessageDialog(null,"Record Updated..");
+     }catch(Exception e) {
+         JOptionPane.showMessageDialog(null, e.getMessage());
+     }
+     
+     
+ }
 }
 
 
