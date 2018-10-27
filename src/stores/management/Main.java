@@ -50,6 +50,7 @@ public class Main extends javax.swing.JFrame {
         jButton11 = new javax.swing.JButton();
         jButton10 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
+        jButton12 = new javax.swing.JButton();
         checkConnection = new javax.swing.JButton();
         jButton9 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
@@ -122,6 +123,13 @@ public class Main extends javax.swing.JFrame {
             }
         });
 
+        jButton12.setText("Track Order");
+        jButton12.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton12ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -147,7 +155,9 @@ public class Main extends javax.swing.JFrame {
                         .addComponent(jButton10)))
                 .addContainerGap(62, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(46, 46, 46)
+                .addComponent(jButton12)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jButton4)
                 .addGap(82, 82, 82))
         );
@@ -167,7 +177,9 @@ public class Main extends javax.swing.JFrame {
                     .addComponent(jButton11, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton10, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(28, 28, 28)
-                .addComponent(jButton4)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton4)
+                    .addComponent(jButton12))
                 .addGap(36, 36, 36))
         );
 
@@ -294,6 +306,11 @@ public class Main extends javax.swing.JFrame {
         object.setVisible(true);
     }//GEN-LAST:event_jButton4ActionPerformed
 
+    private void jButton12ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton12ActionPerformed
+        trackOrder obj = new trackOrder();
+        obj.setVisible(true);
+    }//GEN-LAST:event_jButton12ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -334,6 +351,7 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton10;
     private javax.swing.JButton jButton11;
+    private javax.swing.JButton jButton12;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;

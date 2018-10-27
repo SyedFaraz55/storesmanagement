@@ -564,7 +564,7 @@ public class productv extends javax.swing.JFrame {
         try {
             Desktop.getDesktop().browse(new URL(link).toURI());
         }catch(Exception e) {
-            JOptionPane.showMessageDialog(null,"");
+            JOptionPane.showMessageDialog(null,e.getMessage());
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
