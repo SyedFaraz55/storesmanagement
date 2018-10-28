@@ -12,7 +12,9 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Date;
 import javax.swing.JOptionPane;
+import javax.swing.RowFilter;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
 
 /**
  *
@@ -23,6 +25,9 @@ public class trackOrder extends javax.swing.JFrame {
     /**
      * Creates new form trackOrder
      */
+    String month;
+    int  value;
+    long t;
     public void getdata() {
          DefaultTableModel model = (DefaultTableModel) table.getModel();
          try {
@@ -33,15 +38,22 @@ public class trackOrder extends javax.swing.JFrame {
             String query = "SELECT * FROM `cust_info`";
             rs =st.executeQuery(query);
             while(rs.next()) {
-                model.addRow(new Object[] {rs.getString("object number"),rs.getString("auctionstore"),rs.getString("ordernumber"),rs.getString("pfwa"),rs.getDate("startdate"),rs.getString("enddate"),rs.getDate("dateoforder"),rs.getDate("dateofpayment"),rs.getDate("dosManufacuturer"),rs.getDate("dosCompany"),rs.getString("status")});
+                model.addRow(new Object[] {rs.getString("customer id"),rs.getString("customer name"),rs.getString("object number"),rs.getString("auctionstore"),rs.getString("ordernumber"),rs.getString("pfwa"),rs.getDate("startdate"),rs.getString("enddate"),rs.getDate("dateoforder"),rs.getDate("dateofpayment"),rs.getDate("dosManufacuturer"),rs.getDate("dosCompany"),rs.getString("status")});
             }
          }catch(Exception e) {
-             
+             JOptionPane.showMessageDialog(null,e.getMessage());
          }
     }
     public trackOrder() {
         initComponents();
         
+    }
+    public void filter(String key) {
+        DefaultTableModel model = (DefaultTableModel) table.getModel();
+        TableRowSorter<DefaultTableModel> tr = new TableRowSorter<DefaultTableModel>(model);
+        table.setRowSorter(tr);
+        
+        tr.setRowFilter(RowFilter.regexFilter(key));
     }
    /* public ArrayList<data> data() {
         ArrayList<data> datalist = new ArrayList<>();
@@ -61,7 +73,8 @@ public class trackOrder extends javax.swing.JFrame {
         }
     }*/
     public void searchUpdate() {
-        String id = search.getText();
+        String id = key.getText();
+        DefaultTableModel model = (DefaultTableModel) table.getModel();
         try {
             Connection con  = DriverManager.getConnection("jdbc:mysql://localhost/customerinfo","root","");
             Statement st = con.createStatement();
@@ -95,7 +108,7 @@ public class trackOrder extends javax.swing.JFrame {
                  Date dosc  = rs.getDate("dosCompany");
                  String ss = rs.getString("status");
                  String pid = rs.getString("productid");
-                 
+                 model.addRow(new Object[] {objno,astore,ornumber,pfwa,sd,ed,dor,pdd,dosm,dosc,ss});
            
                  }else {
                      JOptionPane.showMessageDialog(null,"Not Found.");
@@ -136,18 +149,29 @@ public class trackOrder extends javax.swing.JFrame {
 
         jLabel1.setText("Search:");
 
+        key.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                keyKeyReleased(evt);
+            }
+        });
+
         combobox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { " ", "Jan", "Feb", "Mar", "Apr", "May", "Jun", "July", "Aug", "Sep", "Oct", "Nov", "Dec" }));
+        combobox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                comboboxActionPerformed(evt);
+            }
+        });
 
         table.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "Object No", "Auction Store", "Order No", "PFWA", "Start Date", "End Date", "Date Of Order", "DOP", "DOM", "DOC", "Status"
+                "Customer Id", "Customer Name", "Object No", "Auction Store", "Order No", "PFWA", "Start Date", "End Date", "Date Of Order", "DOP", "DOM", "DOC", "Status"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false, false, false, false, false, false
+                false, false, false, false, false, false, false, false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -157,6 +181,11 @@ public class trackOrder extends javax.swing.JFrame {
         jScrollPane1.setViewportView(table);
 
         search.setText("Search");
+        search.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                searchActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -197,8 +226,60 @@ public class trackOrder extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
-        getdata();
+      getdata();
     }//GEN-LAST:event_formWindowOpened
+
+    private void searchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchActionPerformed
+        DefaultTableModel model = (DefaultTableModel) table.getModel();
+        
+        searchUpdate();
+    }//GEN-LAST:event_searchActionPerformed
+
+    private void keyKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_keyKeyReleased
+        String k = key.getText();
+        filter(k);
+    }//GEN-LAST:event_keyKeyReleased
+
+    private void comboboxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboboxActionPerformed
+         month = combobox.getSelectedItem().toString();
+         if(month.equals("Jan")) {
+             value = 01;
+         } else if(month.equals("Feb")) {
+             value = 02;
+         } else if(month.equals("Mar")) {
+             value = 03;
+         } else if(month.equals("Apr")) {
+             value = 04;
+         } else if(month.equals("May")) {
+             value = 05;
+         } else if(month.equals("June")) {
+             value = 06;
+         } else if(month.equals("July")) {
+             value = 07;
+         } else if(month.equals("Aug")) {
+            value = 8;
+         } else if(month.equals("Sep")) {
+            value = 9;
+         } else if(month.equals("Oct")) {
+             value = 10;
+         } else if(month.equals("Nov")) {
+             value = 11;
+         } else if(month.equals("Dec")) {
+             value = 12;
+         }
+        try {
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost/customerinfo","root","");
+            Statement st = con.createStatement();
+            ResultSet rs;
+           String sqlQuery = "SELECT * FROM `cust_info` WHERE CONCAT(`dateoforder`) LIKE '%"+value+"%'";
+           rs = st.executeQuery(sqlQuery);
+           if(rs.next()) {
+               System.out.println(rs.getString("dateoforder"));
+           }
+        }catch(Exception e) {
+            
+        }
+    }//GEN-LAST:event_comboboxActionPerformed
 
     /**
      * @param args the command line arguments
