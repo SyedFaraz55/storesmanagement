@@ -1102,7 +1102,7 @@ public class Place_an_order extends javax.swing.JFrame {
     }//GEN-LAST:event_unpaidActionPerformed
 
     private void completedActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_completedActionPerformed
-        paymentSts = "Completed";
+        paymentSts = "completed";
         System.out.println(paymentSts);
     }//GEN-LAST:event_completedActionPerformed
 

@@ -7,6 +7,7 @@ package stores.management;
 
 import com.mysql.jdbc.Connection;
 import com.sun.glass.events.KeyEvent;
+import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
@@ -117,9 +118,9 @@ public class search extends javax.swing.JFrame {
         DefaultTableModel model = (DefaultTableModel) customerinfo.getModel();
         DefaultTableModel model2 = (DefaultTableModel) item.getModel();
 
-        String ci,cn,ad,phn,eml,pc,cntry,obn,aas,orn,pfwa,sd,ed,pid,dor="";
+        String ci,cn,ad,phn,eml,pc,cntry,obn,aas,orn,pfwa,ed,pid,dor="";
         String rp,rsp,sp,sps,er,mop,pd,dosm,dosc,sts;
-
+        Date sd;
 
         try {
          Connection con = (Connection) DriverManager.getConnection("jdbc:mysql://localhost/customerinfo", "root", "");
@@ -139,7 +140,8 @@ public class search extends javax.swing.JFrame {
              aas  =rs.getString("auctionstore");
              orn = rs.getString("ordernumber");
              pfwa = rs.getString("pfwa");
-             sd = rs.getString("startdate");
+             sd = rs.getDate("startdate");
+             java.util.Date newDate = rs.getTimestamp("startdate");
              ed = rs.getString("enddate");
              dor = rs.getString("dateoforder");
              rp = rs.getString("retailprice");
@@ -155,7 +157,7 @@ public class search extends javax.swing.JFrame {
              pid = rs.getString("productid");
              
              model.addRow(new Object[] {ci,cn,ad,pc,phn,cntry,eml});
-             model2.addRow(new Object[] {obn,aas,orn,pfwa,sd,ed,dor,rp,rsp,sp,sps,er,mop,pd,dosm,dosc,sts,pid});
+             model2.addRow(new Object[] {obn,aas,orn,pfwa,newDate,ed,dor,rp,rsp,sp,sps,er,mop,pd,dosm,dosc,sts,pid});
          } 
          
 
@@ -182,7 +184,7 @@ public class search extends javax.swing.JFrame {
          ResultSet rs;
          String mysqlQuery = "SELECT * FROM `cust_info` WHERE `"+column+"` ='"+value+"'";
          rs =st.executeQuery(mysqlQuery);
-         while(rs.next()) {
+         if(rs.next()) {
              ci = rs.getString("customer id");
              cn = rs.getString("customer name");
              ad = rs.getString("address");
@@ -211,10 +213,12 @@ public class search extends javax.swing.JFrame {
              model.addRow(new Object[] {ci,cn,ad,pc,phn,cntry,eml});
              model2.addRow(new Object[] {obn,aas,orn,pfwa,sd,ed,dor,rp,rsp,sp,sps,er,mop,pd,dosm,dosc,sts,pid});
 
-         } 
+         } else {
+             JOptionPane.showMessageDialog(null,"Not Found");
+         }
 
      }catch(Exception e) {
-         System.out.println(e.getMessage());
+         JOptionPane.showMessageDialog(null,e.getMessage());
      }
     }
 
@@ -300,7 +304,7 @@ public class search extends javax.swing.JFrame {
         Connection con = (Connection) DriverManager.getConnection("jdbc:mysql://localhost/customerinfo","root","");
         Statement st  = con.createStatement();
         ResultSet rs;
-        String sqlQuery = "SELECT * FROM `cust_info` WHERE CONCAT(`customer id`, `customer name`, `address`, `postal code`, `phone`, `country`, `email`, `object number`, `auctionstore`, `ordernumber`, `pfwa`, `startdate`, `enddate`, `dateoforder`, `retailprice`, `retailpriceshipping`, `sellingprice`, `sellingpriceshipping`, `earnings`, `methododpayment`, `dateofpayment`, `dosManufacuturer`, `dosCompany`, `status`,'productid') LIKE '%"+ValueToSearch+"%'";
+        String sqlQuery = "SELECT * FROM `cust_info` WHERE CONCAT(`customer id`, `customer name`, `address`, `postal code`, `phone`, `country`, `email`, `object number`, `auctionstore`, `ordernumber`,`pfwa`,`retailprice`, `retailpriceshipping`, `sellingprice`, `sellingpriceshipping`,`earnings`,`methododpayment`,`status`,'productid') LIKE '%"+ValueToSearch+"%'";
         rs = st.executeQuery(sqlQuery);
         while(rs.next()) {
              id = rs.getString("customer id");
@@ -374,7 +378,7 @@ public class search extends javax.swing.JFrame {
 
         jLabel1.setText("Search By:");
 
-        jcombo2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "customer id", "customer name", "object number", "ordernumber", "status", "auctionstore", "phone", "startdate", "enddate", "dateoforder", "productid" }));
+        jcombo2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "customer id", "customer name", "object number", "ordernumber", "status", "auctionstore", "phone", "productid" }));
         jcombo2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jcombo2ActionPerformed(evt);
@@ -425,14 +429,14 @@ public class search extends javax.swing.JFrame {
         ));
         jScrollPane2.setViewportView(item);
 
-        jcombo3.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "customer id", "customer name", "object number", "ordernumber", "status", "auctionstore", "phone", "startdate", "enddate", "dateoforder", "productid", " " }));
+        jcombo3.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "customer id", "customer name", "object number", "ordernumber", "status", "auctionstore", "phone", "productid" }));
         jcombo3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jcombo3ActionPerformed(evt);
             }
         });
 
-        jcombo4.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "customer id", "customer name", "object number", "ordernumber", "status", "auctionstore", "phone", "startdate", "enddate", "dateoforder", "productid", " " }));
+        jcombo4.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "customer id", "customer name", "object number", "ordernumber", "status", "auctionstore", "phone", "productid" }));
         jcombo4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jcombo4ActionPerformed(evt);

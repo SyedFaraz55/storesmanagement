@@ -125,7 +125,7 @@
     <Component class="javax.swing.JComboBox" name="jcombo2">
       <Properties>
         <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-          <StringArray count="11">
+          <StringArray count="8">
             <StringItem index="0" value="customer id"/>
             <StringItem index="1" value="customer name"/>
             <StringItem index="2" value="object number"/>
@@ -133,10 +133,7 @@
             <StringItem index="4" value="status"/>
             <StringItem index="5" value="auctionstore"/>
             <StringItem index="6" value="phone"/>
-            <StringItem index="7" value="startdate"/>
-            <StringItem index="8" value="enddate"/>
-            <StringItem index="9" value="dateoforder"/>
-            <StringItem index="10" value="productid"/>
+            <StringItem index="7" value="productid"/>
           </StringArray>
         </Property>
       </Properties>
@@ -223,7 +220,7 @@
     <Component class="javax.swing.JComboBox" name="jcombo3">
       <Properties>
         <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-          <StringArray count="12">
+          <StringArray count="8">
             <StringItem index="0" value="customer id"/>
             <StringItem index="1" value="customer name"/>
             <StringItem index="2" value="object number"/>
@@ -231,11 +228,7 @@
             <StringItem index="4" value="status"/>
             <StringItem index="5" value="auctionstore"/>
             <StringItem index="6" value="phone"/>
-            <StringItem index="7" value="startdate"/>
-            <StringItem index="8" value="enddate"/>
-            <StringItem index="9" value="dateoforder"/>
-            <StringItem index="10" value="productid"/>
-            <StringItem index="11" value=" "/>
+            <StringItem index="7" value="productid"/>
           </StringArray>
         </Property>
       </Properties>
@@ -249,7 +242,7 @@
     <Component class="javax.swing.JComboBox" name="jcombo4">
       <Properties>
         <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-          <StringArray count="12">
+          <StringArray count="8">
             <StringItem index="0" value="customer id"/>
             <StringItem index="1" value="customer name"/>
             <StringItem index="2" value="object number"/>
@@ -257,11 +250,7 @@
             <StringItem index="4" value="status"/>
             <StringItem index="5" value="auctionstore"/>
             <StringItem index="6" value="phone"/>
-            <StringItem index="7" value="startdate"/>
-            <StringItem index="8" value="enddate"/>
-            <StringItem index="9" value="dateoforder"/>
-            <StringItem index="10" value="productid"/>
-            <StringItem index="11" value=" "/>
+            <StringItem index="7" value="productid"/>
           </StringArray>
         </Property>
       </Properties>

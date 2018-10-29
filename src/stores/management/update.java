@@ -1099,7 +1099,7 @@ public class update extends javax.swing.JFrame {
     }//GEN-LAST:event_unpaidActionPerformed
 
     private void completedActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_completedActionPerformed
-        paymentSts = "Completed";
+        paymentSts = "completed";
         paid.setSelected(false);
         pending.setSelected(false);
         unpaid.setSelected(false);

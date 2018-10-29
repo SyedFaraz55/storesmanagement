@@ -108,7 +108,7 @@ public class trackOrder extends javax.swing.JFrame {
                  Date dosc  = rs.getDate("dosCompany");
                  String ss = rs.getString("status");
                  String pid = rs.getString("productid");
-                 model.addRow(new Object[] {objno,astore,ornumber,pfwa,sd,ed,dor,pdd,dosm,dosc,ss});
+                 model.addRow(new Object[] {idd,name,objno,astore,ornumber,pfwa,sd,ed,dor,pdd,dosm,dosc,ss});
            
                  }else {
                      JOptionPane.showMessageDialog(null,"Not Found.");
@@ -134,10 +134,12 @@ public class trackOrder extends javax.swing.JFrame {
 
         jLabel1 = new javax.swing.JLabel();
         key = new javax.swing.JTextField();
-        combobox = new javax.swing.JComboBox<>();
         jScrollPane1 = new javax.swing.JScrollPane();
         table = new javax.swing.JTable();
         search = new javax.swing.JButton();
+        combo = new javax.swing.JComboBox<>();
+        jButton1 = new javax.swing.JButton();
+        jLabel2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Track Order");
@@ -147,18 +149,11 @@ public class trackOrder extends javax.swing.JFrame {
             }
         });
 
-        jLabel1.setText("Search:");
+        jLabel1.setText("Search By ID:");
 
         key.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
                 keyKeyReleased(evt);
-            }
-        });
-
-        combobox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { " ", "Jan", "Feb", "Mar", "Apr", "May", "Jun", "July", "Aug", "Sep", "Oct", "Nov", "Dec" }));
-        combobox.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                comboboxActionPerformed(evt);
             }
         });
 
@@ -187,6 +182,22 @@ public class trackOrder extends javax.swing.JFrame {
             }
         });
 
+        combo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { " ", "Jan", "Feb", "Mar", "Apr", "May", "June", "July", "Aug", "Sep", "Oct", "Nov", "Dec" }));
+        combo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                comboActionPerformed(evt);
+            }
+        });
+
+        jButton1.setText("Clear");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
+        jLabel2.setText("Search By Month");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -204,19 +215,32 @@ public class trackOrder extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addComponent(search)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(combobox, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(31, 31, 31))))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(jLabel2)
+                                .addGap(18, 18, 18)
+                                .addComponent(combo, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jButton1, javax.swing.GroupLayout.Alignment.TRAILING))
+                        .addGap(86, 86, 86))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(24, 24, 24)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(key, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(combobox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(search))
-                .addGap(51, 51, 51)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(24, 24, 24)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel1)
+                            .addComponent(key, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(search)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(combo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel2))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButton1)))
+                .addGap(38, 38, 38)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 231, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(179, Short.MAX_VALUE))
         );
@@ -226,11 +250,11 @@ public class trackOrder extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
-      getdata();
+    getdata();
+      
     }//GEN-LAST:event_formWindowOpened
 
     private void searchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchActionPerformed
-        DefaultTableModel model = (DefaultTableModel) table.getModel();
         
         searchUpdate();
     }//GEN-LAST:event_searchActionPerformed
@@ -240,46 +264,44 @@ public class trackOrder extends javax.swing.JFrame {
         filter(k);
     }//GEN-LAST:event_keyKeyReleased
 
-    private void comboboxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboboxActionPerformed
-         month = combobox.getSelectedItem().toString();
-         if(month.equals("Jan")) {
-             value = 01;
-         } else if(month.equals("Feb")) {
-             value = 02;
-         } else if(month.equals("Mar")) {
-             value = 03;
-         } else if(month.equals("Apr")) {
-             value = 04;
-         } else if(month.equals("May")) {
-             value = 05;
-         } else if(month.equals("June")) {
-             value = 06;
-         } else if(month.equals("July")) {
-             value = 07;
-         } else if(month.equals("Aug")) {
-            value = 8;
-         } else if(month.equals("Sep")) {
-            value = 9;
-         } else if(month.equals("Oct")) {
-             value = 10;
-         } else if(month.equals("Nov")) {
-             value = 11;
-         } else if(month.equals("Dec")) {
-             value = 12;
-         }
-        try {
-            Connection con = DriverManager.getConnection("jdbc:mysql://localhost/customerinfo","root","");
-            Statement st = con.createStatement();
-            ResultSet rs;
-           String sqlQuery = "SELECT * FROM `cust_info` WHERE CONCAT(`dateoforder`) LIKE '%"+value+"%'";
-           rs = st.executeQuery(sqlQuery);
-           if(rs.next()) {
-               System.out.println(rs.getString("dateoforder"));
+    private void comboActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboActionPerformed
+       DefaultTableModel model = (DefaultTableModel) table.getModel();
+        int option = combo.getSelectedIndex();
+       try {
+           Connection con = DriverManager.getConnection("jdbc:mysql://localhost/customerinfo","root","");
+           Statement st = con.createStatement();
+           ResultSet rs;
+           String sql = "SELECT * FROM `cust_info` WHERE MONTH(dateoforder) = '"+option+"'";
+           rs = st.executeQuery(sql);
+           while(rs.next()) {
+               Date d = rs.getDate("dateoforder");
+               String cid = rs.getString("customer id");
+               String cname = rs.getString("customer name");
+               String obj = rs.getString("object number");
+               String astore = rs.getString("auctionstore");
+               String orderno = rs.getString("ordernumber");
+               String pfwaa = rs.getString("pfwa");
+               Date sd = rs.getDate("startdate");
+               Date ed = rs.getDate("enddate");
+               Date dor = rs.getDate("dateoforder");
+               Date dop = rs.getDate("dateofpayment");
+               Date m = rs.getDate("dosManufacuturer");
+               Date c = rs.getDate("dosCompany");
+               String s = rs.getString("status");
+               
+               model.addRow(new Object[] {cid,cname,obj,astore,orderno,pfwaa,sd,ed,dor,dop,m,c,s});
+               
+               
            }
-        }catch(Exception e) {
-            
-        }
-    }//GEN-LAST:event_comboboxActionPerformed
+       }catch(Exception e) {
+           System.out.println(e.getMessage());
+       }
+    }//GEN-LAST:event_comboActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        DefaultTableModel model = (DefaultTableModel) table.getModel();
+        model.setRowCount(0);
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -317,8 +339,10 @@ public class trackOrder extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JComboBox<String> combobox;
+    private javax.swing.JComboBox<String> combo;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextField key;
     private javax.swing.JButton search;
