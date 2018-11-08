@@ -6,30 +6,25 @@
 package stores.management;
 
 import com.mysql.jdbc.Connection;
-import java.awt.Toolkit;
-import java.awt.event.WindowEvent;
-import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.ArrayList;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
  * @author home
  */
-public class performance extends javax.swing.JFrame {
+public class Performance2 extends javax.swing.JFrame {
 
     /**
-     * Creates new form performance
+     * Creates new form Performance2
      */
-    public performance() {
+    public Performance2() {
         initComponents();
     }
-    
-    
     
     public int totalSales=0,totalRetail=0,rps=0,sps=0,gp=0;
     public int totalSales() {
@@ -150,13 +145,10 @@ public class performance extends javax.swing.JFrame {
         int oe = rps + sps;
         int x = Math.abs(oe);
         String s = Integer.toString(x);
-        exp.setText(s);
+//        exp.setText(s);
         
     }
-        public void FrameClose() {
-        WindowEvent winClosingEvent = new WindowEvent(this,WindowEvent.WINDOW_CLOSING);
-        Toolkit.getDefaultToolkit().getSystemEventQueue().postEvent(winClosingEvent);
-    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -177,22 +169,19 @@ public class performance extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
-        jLabel6 = new javax.swing.JLabel();
-        jLabel7 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jTextField2 = new javax.swing.JTextField();
         jLabel8 = new javax.swing.JLabel();
         totalExpenses = new javax.swing.JTextField();
+        jLabel9 = new javax.swing.JLabel();
+        jLabel10 = new javax.swing.JLabel();
+        jTextField3 = new javax.swing.JTextField();
+        jTextField4 = new javax.swing.JTextField();
         combo = new javax.swing.JComboBox<>();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        addexp = new javax.swing.JTable();
         jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Performance");
-        addWindowListener(new java.awt.event.WindowAdapter() {
-            public void windowOpened(java.awt.event.WindowEvent evt) {
-                formWindowOpened(evt);
-            }
-        });
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Performance"));
 
@@ -217,7 +206,7 @@ public class performance extends javax.swing.JFrame {
             }
         });
 
-        jLabel4.setText("Other Expenses:");
+        jLabel4.setText("Total Other Expenses:");
 
         sold.setEditable(false);
         sold.addActionListener(new java.awt.event.ActionListener() {
@@ -241,15 +230,19 @@ public class performance extends javax.swing.JFrame {
 
         jLabel1.setText("Sales Revenue:");
 
-        jLabel6.setText("Miscellaneous Expense 1 ");
-
-        jLabel7.setText("Miscellaneous Expense 2");
-
         jLabel8.setForeground(new java.awt.Color(255, 0, 51));
         jLabel8.setText("Total Expenses:");
 
         totalExpenses.setEditable(false);
         totalExpenses.setForeground(new java.awt.Color(255, 0, 51));
+
+        jLabel9.setText("Retail Price Shiping:");
+
+        jLabel10.setText("Selling Price Shipping:");
+
+        jTextField3.setEditable(false);
+
+        jTextField4.setEditable(false);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -259,9 +252,13 @@ public class performance extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel6)
-                        .addGap(18, 18, 18)
-                        .addComponent(jTextField1))
+                        .addComponent(jLabel10)
+                        .addGap(36, 36, 36)
+                        .addComponent(jTextField4))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel5)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(nprofit, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(jPanel1Layout.createSequentialGroup()
                             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
@@ -278,22 +275,18 @@ public class performance extends javax.swing.JFrame {
                                         .addComponent(sold, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addComponent(gprofit, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE)))
                                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                    .addComponent(jLabel4)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(exp, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(jLabel5)
-                                        .addComponent(jLabel8))
+                                        .addComponent(jLabel4)
+                                        .addComponent(jLabel9))
                                     .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                        .addComponent(nprofit, javax.swing.GroupLayout.DEFAULT_SIZE, 187, Short.MAX_VALUE)
-                                        .addComponent(totalExpenses))))
+                                        .addComponent(exp, javax.swing.GroupLayout.DEFAULT_SIZE, 187, Short.MAX_VALUE)
+                                        .addComponent(jTextField3))))
                             .addGap(0, 0, Short.MAX_VALUE))
                         .addGroup(jPanel1Layout.createSequentialGroup()
-                            .addComponent(jLabel7)
-                            .addGap(21, 21, 21)
-                            .addComponent(jTextField2))))
+                            .addComponent(jLabel8)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(totalExpenses, javax.swing.GroupLayout.PREFERRED_SIZE, 187, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -319,21 +312,21 @@ public class performance extends javax.swing.JFrame {
                     .addComponent(exp, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel6)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                    .addComponent(jLabel9)
+                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel7)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabel10)
+                    .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel5)
-                    .addComponent(nprofit, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(nprofit, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel5))
                 .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel8)
                     .addComponent(totalExpenses, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(67, Short.MAX_VALUE))
+                .addContainerGap(75, Short.MAX_VALUE))
         );
 
         combo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { " ", "Jan", "Feb", "Mar", "Apr", "May", "June", "July", "Aug", "Sep", "Oct", "Nov", "Dec" }));
@@ -343,7 +336,17 @@ public class performance extends javax.swing.JFrame {
             }
         });
 
-        jButton1.setText("Clear");
+        addexp.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Name", "Cost"
+            }
+        ));
+        jScrollPane1.setViewportView(addexp);
+
+        jButton1.setText("Add Expenses");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
@@ -355,31 +358,51 @@ public class performance extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(37, 37, 37)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addContainerGap(374, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jButton1)
-                    .addComponent(combo, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(19, Short.MAX_VALUE))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 283, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(87, 87, 87))
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createSequentialGroup()
+                    .addGap(11, 11, 11)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                    .addComponent(combo, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(241, Short.MAX_VALUE)))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(36, 36, 36)
-                .addComponent(combo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addContainerGap(162, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
                 .addComponent(jButton1)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(45, 45, 45)
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+                .addGap(108, 108, 108))
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createSequentialGroup()
+                    .addGap(36, 36, 36)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                            .addComponent(combo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(391, 391, 391))
+                        .addGroup(layout.createSequentialGroup()
+                            .addGap(9, 9, 9)
+                            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addGap(37, 37, 37)))
         );
 
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
+
+    private void expActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_expActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_expActionPerformed
+
+    private void nprofitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nprofitActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_nprofitActionPerformed
 
     private void salesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_salesActionPerformed
         // TODO add your handling code here:
@@ -389,85 +412,33 @@ public class performance extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_soldActionPerformed
 
-    private void expActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_expActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_expActionPerformed
-
     private void gprofitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_gprofitActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_gprofitActionPerformed
 
-    private void nprofitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nprofitActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_nprofitActionPerformed
-
-    private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
-
-
-
-       
-     totalSales();
-     totalRetail();
-     int GPPP = grossprofit();
-     int retailsp = rps();
-     int sellingsp = sps();
-     int otherExpenses = retailsp+sellingsp;
-     int gpp_abs = Math.abs(GPPP);
-     int oe_abs = Math.abs(otherExpenses);
-     int netProfit = gpp_abs-oe_abs;
-     int net_abs = Math.abs(netProfit);
-     
-     
-     String oee = Integer.toString(oe_abs);
-     String np = Integer.toString(net_abs);
-     
-     
-     
-     
-     exp.setText(oee);
-     nprofit.setText(np);
-        
-            
-        
-     
-        
-    
-    }//GEN-LAST:event_formWindowOpened
-
     private void comboActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboActionPerformed
-        
-            totalSales();
-     totalRetail();
-     int GPPP = grossprofit();
-     int retailsp = rps();
-     int sellingsp = sps();
-     int otherExpenses = retailsp+sellingsp;
-     int gpp_abs = Math.abs(GPPP);
-     int oe_abs = Math.abs(otherExpenses);
-     int netProfit = gpp_abs-oe_abs;
-     int net_abs = Math.abs(netProfit);
-     
-     
-     String oee = Integer.toString(oe_abs);
-     String np = Integer.toString(net_abs);
-     
-     exp.setText(oee);
-     nprofit.setText(np);
-     
-     te();
-        
-     
 
+        totalSales();
+        totalRetail();
+        int GPPP = grossprofit();
+        int retailsp = rps();
+        int sellingsp = sps();
+        int otherExpenses = retailsp+sellingsp;
+        int gpp_abs = Math.abs(GPPP);
+        int oe_abs = Math.abs(otherExpenses);
+        int netProfit = gpp_abs-oe_abs;
+        int net_abs = Math.abs(netProfit);
 
+        String oee = Integer.toString(oe_abs);
+        String np = Integer.toString(net_abs);
 
+//        exp.setText(oee);
+//        nprofit.setText(np);
 
+//        te();
 
-
-
-
-
- /*----------------------------------------------------------------------------------------------------*/        
-       /* int option = combo.getSelectedIndex();
+        /*----------------------------------------------------------------------------------------------------*/
+        /* int option = combo.getSelectedIndex();
         try {
             Connection con = (Connection) DriverManager.getConnection("jdbc:mysql://localhost/customerinfo","root","");
             Statement st = con.createStatement();
@@ -491,7 +462,7 @@ public class performance extends javax.swing.JFrame {
                 Date c = rs.getDate("dosCompany");
                 String s = rs.getString("status");
 
-              System.out.println(cid + " " + cname);
+                System.out.println(cid + " " + cname);
 
             }
         }catch(Exception e) {
@@ -500,16 +471,21 @@ public class performance extends javax.swing.JFrame {
     }//GEN-LAST:event_comboActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        performance obj = new performance();
-        FrameClose();
-        obj.setVisible(true);
-        
-        int x=0,y =0,z=0;
-        sales.setText("");
-        sold.setText("");
-        gprofit.setText(Integer.toString(x));
-        exp.setText(Integer.toString(y));
-        nprofit.setText(Integer.toString(z));
+        DefaultTableModel model = (DefaultTableModel) addexp.getModel();
+        String name = JOptionPane.showInputDialog("Enter Name");
+        String cost  = JOptionPane.showInputDialog("Enter Cost");
+        int c = Integer.parseInt(cost);
+        ArrayList list = new ArrayList();
+        int sum = 0;
+        for(int i = 0;i<addexp.getRowCount();i++)
+        {
+            
+//             list.add(addexp.getModel().getValueAt(i,1)); //get the all row values at column index 0
+             sum = sum + Integer.parseInt(addexp.getValueAt(i, 1).toString());
+        }
+        totalExpenses.setText(Integer.toString(sum));
+        System.out.println(list);
+        model.addRow(new Object[] {name,cost});
     }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
@@ -529,40 +505,42 @@ public class performance extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(performance.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Performance2.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(performance.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Performance2.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(performance.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Performance2.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(performance.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Performance2.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new performance().setVisible(true);
+                new Performance2().setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTable addexp;
     private javax.swing.JComboBox<String> combo;
     private javax.swing.JTextField exp;
     private javax.swing.JTextField gprofit;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTextField jTextField3;
+    private javax.swing.JTextField jTextField4;
     private javax.swing.JTextField nprofit;
     private javax.swing.JTextField sales;
     private javax.swing.JTextField sold;
