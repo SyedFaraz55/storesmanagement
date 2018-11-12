@@ -12,6 +12,8 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Image;
 import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.io.IOException;
 import java.sql.DriverManager;
@@ -28,6 +30,7 @@ import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
+import javax.swing.Timer;
 import javax.swing.table.DefaultTableModel;
 import stores.management.dao.*;
 import stores.management.dbcon.DataBaseConnection;
@@ -44,13 +47,35 @@ public class Place_an_order extends javax.swing.JFrame {
      * Creates new form Place_an_order
      */
     
-    java.util.Date date,date2,date3,date4,date5,date6;
-    java.sql.Date sqldate,sqldate2,sqldate3,sqldate4,sqldate5,sqldate6;
+    private Timer t;
+    private ActionListener al;
     public Place_an_order() {
         initComponents();
-     
+     al = new ActionListener() {
+           public void actionPerformed(ActionEvent ae) {
+               progress.setIndeterminate(true);
+               if(progress.getValue()<100) {
+                   progress.setValue(progress.getValue()+2);
+                   if(progress.getValue()==50)
+                   progress.setString("Connecting Database..");
+                   
+               } else {
+                   t.stop();
+                   progress.setVisible(false);
+                    ids();
+                   auctionstores();
+                    paymethods();
+                    addAccounts();
+                   
+               }
+           }
+       };
+       t = new Timer(200,al);
+       t.start();
     
     }
+    java.util.Date date,date2,date3,date4,date5,date6,dd;
+    java.sql.Date sqldate,sqldate2,sqldate3,sqldate4,sqldate5,sqldate6,extra;
     
 {
     
@@ -168,6 +193,10 @@ public class Place_an_order extends javax.swing.JFrame {
        
        date6 = dos_c.getDate();
        sqldate6 = new java.sql.Date(date6.getTime());
+       
+       dd = dateoforder.getDate();
+       extra = new java.sql.Date(dd.getTime());
+       
         
         int reprice =Integer.parseInt(retailP.getText());
         String mopp = mop.getSelectedItem().toString();
@@ -243,6 +272,7 @@ public class Place_an_order extends javax.swing.JFrame {
        try {
          Connection con = (Connection) DriverManager.getConnection("jdbc:mysql://localhost/customerinfo", "root", "");
          Statement st = con.createStatement();
+         msg.setText("Connected");
          ResultSet rs;
          String mysqlQuery = "SELECT * FROM `cust_info`";
          rs = st.executeQuery(mysqlQuery);
@@ -260,6 +290,7 @@ public class Place_an_order extends javax.swing.JFrame {
        try {
          Connection con = (Connection) DriverManager.getConnection("jdbc:mysql://localhost/customerinfo", "root", "");
          Statement st = con.createStatement();
+         msg.setText("Connected");
          ResultSet rs;
          String mysqlQuery = "SELECT * FROM `auctionstore`";
          rs = st.executeQuery(mysqlQuery);
@@ -277,6 +308,7 @@ public class Place_an_order extends javax.swing.JFrame {
        try {
          Connection con = (Connection) DriverManager.getConnection("jdbc:mysql://localhost/customerinfo", "root", "");
          Statement st = con.createStatement();
+         msg.setText("Connected");
          ResultSet rs;
          String mysqlQuery = "SELECT * FROM `paymentmethods`";
          rs = st.executeQuery(mysqlQuery);
@@ -293,6 +325,7 @@ public class Place_an_order extends javax.swing.JFrame {
        try {
          Connection con = (Connection) DriverManager.getConnection("jdbc:mysql://localhost/customerinfo", "root", "");
          Statement st = con.createStatement();
+         msg.setText("Connected");
          ResultSet rs;
          String mysqlQuery = "SELECT * FROM `pickfromwhichaccount`";
          rs = st.executeQuery(mysqlQuery);
@@ -388,6 +421,12 @@ public class Place_an_order extends javax.swing.JFrame {
         imagePreview = new javax.swing.JLabel();
         getProduct = new javax.swing.JButton();
         msg = new javax.swing.JLabel();
+        jtable = new javax.swing.JScrollPane();
+        addexp = new javax.swing.JTable();
+        tdisplay = new javax.swing.JLabel();
+        total = new javax.swing.JLabel();
+        addexpbtn = new javax.swing.JButton();
+        progress = new javax.swing.JProgressBar();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Place Order");
@@ -548,7 +587,7 @@ public class Place_an_order extends javax.swing.JFrame {
                     .addComponent(phonenumber, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(address, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel2))
-                .addContainerGap(15, Short.MAX_VALUE))
+                .addContainerGap(27, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
@@ -796,8 +835,12 @@ public class Place_an_order extends javax.swing.JFrame {
                             .addComponent(sp, javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(rps, javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(retailP, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel4Layout.createSequentialGroup()
+                                .addGap(18, 18, 18)
+                                .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGap(26, 26, 26))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
                                 .addGap(26, 26, 26)
                                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(jPanel4Layout.createSequentialGroup()
@@ -816,16 +859,12 @@ public class Place_an_order extends javax.swing.JFrame {
                                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                             .addComponent(dos_c, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                             .addComponent(jLabel28))))
-                                .addGap(208, 208, 208))
-                            .addGroup(jPanel4Layout.createSequentialGroup()
-                                .addGap(18, 18, 18)
-                                .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addGap(26, 26, 26)
-                                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                .addGap(29, 29, 29))))
+                                .addGap(58, 58, 58)))
+                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(29, 29, 29))
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel4Layout.createSequentialGroup()
@@ -951,6 +990,32 @@ public class Place_an_order extends javax.swing.JFrame {
             }
         });
 
+        addexp.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Name", "Cost"
+            }
+        ));
+        addexp.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        addexp.getTableHeader().setReorderingAllowed(false);
+        jtable.setViewportView(addexp);
+
+        tdisplay.setText("Total:");
+
+        total.setText("0");
+
+        addexpbtn.setText("Add Expenses");
+        addexpbtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addexpbtnActionPerformed(evt);
+            }
+        });
+
+        progress.setString("Please Wait....");
+        progress.setStringPainted(true);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -965,7 +1030,9 @@ public class Place_an_order extends javax.swing.JFrame {
                                 .addGap(113, 113, 113)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel24)
-                                    .addComponent(jLabel26)))
+                                    .addComponent(jLabel26))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(addexpbtn))
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(18, 18, 18)
                                 .addComponent(jLabel27)
@@ -975,23 +1042,33 @@ public class Place_an_order extends javax.swing.JFrame {
                                         .addComponent(productid, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                         .addComponent(getProduct))
-                                    .addComponent(imagePreview, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(imagePreview, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(18, 18, 18)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addGroup(layout.createSequentialGroup()
+                                                .addComponent(tdisplay, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(total, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                            .addComponent(jtable, javax.swing.GroupLayout.PREFERRED_SIZE, 283, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addGap(0, 0, Short.MAX_VALUE))))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGap(223, 223, 223))))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(310, 310, 310)
-                .addComponent(msg, javax.swing.GroupLayout.PREFERRED_SIZE, 213, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(133, 133, 133)
+                                .addComponent(progress, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(msg, javax.swing.GroupLayout.PREFERRED_SIZE, 213, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(msg, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGap(27, 27, 27)
                         .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(27, 27, 27)
@@ -1000,13 +1077,28 @@ public class Place_an_order extends javax.swing.JFrame {
                             .addComponent(productid, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(getProduct))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(imagePreview, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(18, 18, 18)
+                        .addComponent(imagePreview, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(jtable, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(tdisplay, javax.swing.GroupLayout.PREFERRED_SIZE, 11, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(total))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel24)
                     .addComponent(jLabel26))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, 389, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, 389, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(addexpbtn)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(msg, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(41, 41, 41)
+                        .addComponent(progress, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(32, 32, 32))))
         );
 
         pack();
@@ -1014,10 +1106,7 @@ public class Place_an_order extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
-        ids();
-        auctionstores();
-        paymethods();
-        addAccounts();
+        //sd
     }//GEN-LAST:event_formWindowOpened
 
     private void postalcodeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_postalcodeActionPerformed
@@ -1225,6 +1314,41 @@ public class Place_an_order extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_postalcodeKeyTyped
 
+    private void addexpbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addexpbtnActionPerformed
+        DefaultTableModel model = (DefaultTableModel) addexp.getModel();
+        String name = "";
+        int cost =0;
+        dd = dateoforder.getDate();
+       extra = new java.sql.Date(dd.getTime());
+        if(dateoforder.getDate()==null) {
+            JOptionPane.showMessageDialog(null,"Please select date of order first");
+        } else {
+            int te = Integer.parseInt(total.getText());
+        name = JOptionPane.showInputDialog("Enter Name");
+        cost  = Integer.parseInt(JOptionPane.showInputDialog("Enter Cost"));
+            try {
+                Connection con  = (Connection) DriverManager.getConnection("jdbc:mysql://localhost/customerinfo", "root", "");
+                Statement st = con.createStatement();
+                
+                Date v = dateoforder.getDate();
+                String mysql = "INSERT INTO `customerinfo`.`other_expenses` (`dateoforder`,`expenses name`,`cost`,`total expense`) VALUES ('"+ extra +"','"+ name +"','"+ cost +"','"+ te +"')";
+                st.executeUpdate(mysql);
+                JOptionPane.showMessageDialog(null,"Saved...");
+            }catch(Exception e) {
+                JOptionPane.showMessageDialog(null,e.getMessage());
+        }
+        
+
+        model.addRow(new Object[] {name,cost});
+        int rows = addexp.getRowCount();
+        int sum = 0;
+        for(int i=0;i<rows;i++) {
+            sum = sum + Integer.parseInt(addexp.getValueAt(i, 1).toString());
+        }
+        total.setText(Integer.toString(sum));
+        }
+    }//GEN-LAST:event_addexpbtnActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -1261,6 +1385,8 @@ public class Place_an_order extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTable addexp;
+    private javax.swing.JButton addexpbtn;
     private javax.swing.JTextField address;
     private javax.swing.JComboBox<String> auctionstorebox;
     private javax.swing.ButtonGroup buttonGroup1;
@@ -1315,6 +1441,7 @@ public class Place_an_order extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JComboBox<String> jcombo1;
+    private javax.swing.JScrollPane jtable;
     private javax.swing.JComboBox<String> mop;
     private javax.swing.JLabel msg;
     private javax.swing.JTextField objectnumber;
@@ -1326,12 +1453,15 @@ public class Place_an_order extends javax.swing.JFrame {
     private javax.swing.JTextField phonenumber;
     private javax.swing.JTextField postalcode;
     private javax.swing.JTextField productid;
+    private javax.swing.JProgressBar progress;
     private javax.swing.JTextField retailP;
     private javax.swing.JTextField rps;
     private javax.swing.JTextField sp;
     private javax.swing.JTextField sps;
     private com.toedter.calendar.JDateChooser startdate;
     private javax.swing.JLabel sts;
+    private javax.swing.JLabel tdisplay;
+    private javax.swing.JLabel total;
     private javax.swing.JRadioButton unpaid;
     // End of variables declaration//GEN-END:variables
 }

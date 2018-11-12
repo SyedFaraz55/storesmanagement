@@ -53,7 +53,7 @@ public class DBConnection {
          Connection conn = (Connection) DriverManager.getConnection(URI, USERNAME, PASSWORD);
          Statement st  = conn.createStatement();
          String mysql = "INSERT INTO `customerinfo`.`cust_info` (`customer id`,`customer name`,`address`,`postal code`,`phone`,`country`,`email`,`object number`,`auctionstore`,`ordernumber`,`pfwa`,`startdate`,`enddate`,`dateoforder`,`retailprice`,`retailpriceshipping`,`sellingprice`,`sellingpriceshipping`,`earnings`,`methododpayment`,`dateofpayment`,`dosManufacuturer`,`dosCompany`,`status`,`productid`) "
-                 + "VALUES ('"+ id +"','"+ cname +"','"+ address +"','"+ pcode +"','"+ phone +"','"+ country +"','"+ email +"','"+objectno+"','"+astore+"','"+ordern+"','"+pfw+"','"+sd+"','"+ed+"','"+door+"','"+reprice+"','"+rpps+"','"+sellingp+"'"
+                 + " VALUES ('"+ id +"','"+ cname +"','"+ address +"','"+ pcode +"','"+ phone +"','"+ country +"','"+ email +"','"+objectno+"','"+astore+"','"+ordern+"','"+pfw+"','"+sd+"','"+ed+"','"+door+"','"+reprice+"','"+rpps+"','"+sellingp+"'"
                  + ",'"+ssps+"','"+earning+"','"+mopp+"','"+pickdate+"','"+dom+"','"+dos+"','"+paymentSts+"','"+pid+"');";
          st.executeUpdate(mysql);
          JOptionPane.showMessageDialog(null,"Record Added !");

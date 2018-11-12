@@ -203,6 +203,7 @@ public class productv extends javax.swing.JFrame {
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel1.setText("Product Name:");
 
+        tfProductLink.setText("http://www.");
         tfProductLink.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
 
         jLabel5.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
@@ -380,7 +381,7 @@ public class productv extends javax.swing.JFrame {
                         .addComponent(attachFile2)
                         .addGap(215, 215, 215)
                         .addComponent(jLabel6)))
-                .addContainerGap(578, Short.MAX_VALUE))
+                .addContainerGap(566, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)

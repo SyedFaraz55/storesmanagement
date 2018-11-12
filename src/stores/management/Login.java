@@ -2,8 +2,11 @@ package stores.management;
 
 import com.sun.glass.events.KeyEvent;
 import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import javax.swing.JOptionPane;
+import javax.swing.Timer;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -20,15 +23,20 @@ public class Login extends javax.swing.JFrame {
     /**
      * Creates new form Login
      */
-     public void FrameClose() {
-        WindowEvent winClosingEvent = new WindowEvent(this,WindowEvent.WINDOW_CLOSING);
-        Toolkit.getDefaultToolkit().getSystemEventQueue().postEvent(winClosingEvent);
-    }
+    
+    
+     
     
     public Login() {
         initComponents();
+        
+        
+       
     }
-    
+    public void FrameClose() {
+        WindowEvent winClosingEvent = new WindowEvent(this,WindowEvent.WINDOW_CLOSING);
+        Toolkit.getDefaultToolkit().getSystemEventQueue().postEvent(winClosingEvent);
+    }
     public void logIn() {
         String username = user.getText();
        String password = pass.getText();
