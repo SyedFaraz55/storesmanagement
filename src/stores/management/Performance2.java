@@ -31,6 +31,122 @@ public class Performance2 extends javax.swing.JFrame {
        
     }
     
+    public int retailPrices(){
+        int retailPriceShipping = 0;
+        try {
+            Connection con  =(Connection) DriverManager.getConnection("jdbc:mysql://localhost/customerinfo","root","");
+            Statement st = con.createStatement();
+            ResultSet rs;
+            String mysql = "SELECT * FROM cust_info";
+            rs = st.executeQuery(mysql);
+            while(rs.next()) {
+                 retailPriceShipping = rs.getInt("retailpriceshipping");
+            }
+            retailP.setText(Integer.toString(retailPriceShipping));
+        }catch(Exception e ) {
+            JOptionPane.showMessageDialog(null, e.getMessage());
+        }
+        return retailPriceShipping;
+    }
+    
+    public int sellingPrices(){
+        int sellingpriceShipping = 0;
+        try {
+            Connection con  =(Connection) DriverManager.getConnection("jdbc:mysql://localhost/customerinfo","root","");
+            Statement st = con.createStatement();
+            ResultSet rs;
+            String mysql = "SELECT * FROM cust_info";
+            rs = st.executeQuery(mysql);
+            while(rs.next()) {
+                 sellingpriceShipping = rs.getInt("sellingpriceshipping");
+            }
+            sellingP.setText(Integer.toString(sellingpriceShipping));
+        }catch(Exception e ) {
+            JOptionPane.showMessageDialog(null, e.getMessage());
+        }
+        return sellingpriceShipping;
+    }
+    
+    public int totalE() {
+        int rp = totalRetail;
+        int sp = totalSales;
+        int cost= 0;
+        try{
+            Connection con=(Connection) DriverManager.getConnection("jdbc:mysql://localhost/customerinfo","root","");
+            Statement st= con.createStatement();
+            ResultSet rs;
+            String sql = "SELECT * FROM other_expenses";
+            rs = st.executeQuery(sql);
+            while(rs.next()) {
+                 cost = cost + rs.getInt("cost");    
+            }
+            
+            int mse = rp+sp+cost;
+            exp.setText(Integer.toString(mse));
+        }catch(Exception e){
+            JOptionPane.showMessageDialog(null,e.getMessage());
+        }
+        return cost;
+    }
+    
+    
+    public int totalRetails() {
+        int option = combo.getSelectedIndex();
+         totalRetail=0;
+        try {
+         Connection con = (Connection) DriverManager.getConnection("jdbc:mysql://localhost/customerinfo", "root", "");
+         Statement st = con.createStatement();
+         ResultSet rs,rs1;
+//         String mysqlQuery = "SELECT `retailprice` FROM `cust_info` WHERE MONTH(dateoforder) = '"+option+"' ";
+        String mysql = "SELECT `retailprice` FROM cust_info";
+         rs =st.executeQuery(mysql);
+         
+         while(rs.next()) {
+            totalRetail += rs.getInt("retailprice");
+            String s  = Integer.toString(totalRetail);
+            sold.setText(s);
+         }
+     }catch(Exception e) {
+         System.out.println(e.getMessage());
+     }
+        return totalRetail;
+    }
+    
+    
+    public int totalSale() {
+        int option = combo.getSelectedIndex();
+        try {
+         Connection con = (Connection) DriverManager.getConnection("jdbc:mysql://localhost/customerinfo", "root", "");
+         Statement st = con.createStatement();
+         ResultSet rs,rs1;
+         String mysqlQuery2 = "SELECT `sellingprice` FROM `cust_info` WHERE MONTH(dateoforder) = '"+option+"'";
+         String mysqlQuery = "SELECT * FROM `cust_info`";
+         
+         String mysql = "SELECT `retailprice` FROM cust_info";
+//         String mysql = "SELECT SUM(sellingprice) FROM cust_info";
+         rs =st.executeQuery(mysqlQuery);
+         
+         while(rs.next()) {
+            totalSales += rs.getInt("sellingprice");
+            String s  = Integer.toString(totalSales);
+            sales.setText(s);
+         }
+     }catch(Exception e) {
+         System.out.println(e.getMessage());
+     }
+        return totalSales;
+    }
+    
+    public int gross_profit() {
+        int gp = totalSales - totalRetail;
+        gprofit.setText(Integer.toString(gp));
+        return gp;
+    }
+    
+    
+    
+    
+    
     public void performance() {
         DefaultTableModel model = (DefaultTableModel) addexp.getModel();
        int option = combo.getSelectedIndex();
@@ -94,7 +210,7 @@ public class Performance2 extends javax.swing.JFrame {
     
     public int totalSales=0,totalRetail=0,rps=0,sps=0,gp=0;
     public int totalSales() {
-         int option = combo.getSelectedIndex();
+        int option = combo.getSelectedIndex();
         try {
          Connection con = (Connection) DriverManager.getConnection("jdbc:mysql://localhost/customerinfo", "root", "");
          Statement st = con.createStatement();
@@ -250,6 +366,7 @@ public class Performance2 extends javax.swing.JFrame {
         oebtn = new javax.swing.JButton();
         total = new javax.swing.JLabel();
         clear = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Performance");
@@ -466,6 +583,13 @@ public class Performance2 extends javax.swing.JFrame {
             }
         });
 
+        jButton1.setText("Data From Beginning Of Time");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -486,7 +610,9 @@ public class Performance2 extends javax.swing.JFrame {
                                 .addGap(8, 8, 8)))
                         .addGap(87, 87, 87))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(clear, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jButton1)
+                            .addComponent(clear, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(154, 154, 154))))
             .addGroup(layout.createSequentialGroup()
                 .addGap(131, 131, 131)
@@ -505,9 +631,11 @@ public class Performance2 extends javax.swing.JFrame {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(36, 36, 36)
+                .addContainerGap()
+                .addComponent(jButton1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(clear, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 89, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 85, Short.MAX_VALUE)
                 .addComponent(jtable, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -705,6 +833,15 @@ public class Performance2 extends javax.swing.JFrame {
         totalExpenses.setText(Integer.toString(0));
     }//GEN-LAST:event_clearActionPerformed
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    totalSale();
+    totalRetails();
+    retailPrices();
+    sellingPrices();
+    gross_profit();
+    totalE();
+    }//GEN-LAST:event_jButton1ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -747,6 +884,7 @@ public class Performance2 extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> combo;
     private javax.swing.JTextField exp;
     private javax.swing.JTextField gprofit;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
