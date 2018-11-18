@@ -266,7 +266,7 @@ public class Main extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton9ActionPerformed
 
     private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
-        performance obj = new performance();
+        Performance2 obj = new Performance2();
         obj.setVisible(true);
     }//GEN-LAST:event_jButton7ActionPerformed
 

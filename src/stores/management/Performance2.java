@@ -9,6 +9,7 @@ import com.mysql.jdbc.Connection;
 import java.awt.Color;
 import java.awt.Toolkit;
 import java.awt.event.WindowEvent;
+import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
@@ -30,6 +31,53 @@ public class Performance2 extends javax.swing.JFrame {
         
        
     }
+    
+    java.util.Date date,date2;
+    java.sql.Date sqldate,sqldate2;
+    
+    
+    // Total Expenses
+    public void ttl() {
+        int s =Integer.parseInt(sold.getText());
+    int e = Integer.parseInt(exp.getText());
+    int total_exp = s+e;
+    totalExpenses.setText(Integer.toString(total_exp));
+    }
+    
+    
+    // Gross profit
+    
+    public void grp() {
+        int gp = Integer.parseInt(gprofit.getText());
+    int totale = Integer.parseInt(exp.getText());
+    int net = gp - totale;
+    if(net<0) {
+        nprofit.setForeground(Color.red);
+        nprofit.setText(Integer.toString(net));
+    } else {
+         nprofit.setForeground(Color.GREEN);
+        nprofit.setText(Integer.toString(net));
+    }
+    }
+    
+    public void range() {
+         date = startdate.getDate();
+        sqldate = new java.sql.Date(date.getTime());
+        
+        date2 = enddate.getDate();
+        sqldate2 = new java.sql.Date(date2.getTime());
+        try {
+            Connection con  = (Connection) DriverManager.getConnection("jdbc:mysql://localhost/customerinfo","root","");
+            Statement st = con.createStatement();
+            ResultSet rs;
+            String mysql = "SELECT * FROM `cust_info` WHERE `dateoforder` BETWEEN '"+sqldate+"' AND '"+sqldate2+"'";
+            rs = st.executeQuery(mysql);
+            
+        }catch(Exception e) {
+            JOptionPane.showMessageDialog(null, e.getMessage());
+        }
+    }
+    
     
     public int retailPrices(){
         int retailPriceShipping = 0;
@@ -96,6 +144,7 @@ public class Performance2 extends javax.swing.JFrame {
         try {
          Connection con = (Connection) DriverManager.getConnection("jdbc:mysql://localhost/customerinfo", "root", "");
          Statement st = con.createStatement();
+       
          ResultSet rs,rs1;
 //         String mysqlQuery = "SELECT `retailprice` FROM `cust_info` WHERE MONTH(dateoforder) = '"+option+"' ";
         String mysql = "SELECT `retailprice` FROM cust_info";
@@ -232,7 +281,7 @@ public class Performance2 extends javax.swing.JFrame {
         return totalSales;
     }
     
-    public void te() {
+    public int  te() {
         String value_sold = sold.getText();
      int value_s = Integer.parseInt(value_sold);
      
@@ -243,6 +292,7 @@ public class Performance2 extends javax.swing.JFrame {
      String te = Integer.toString(totalExp);
      
      totalExpenses.setText(te);
+     return totalExp;
     }
     
     public int totalRetail() {
@@ -360,13 +410,14 @@ public class Performance2 extends javax.swing.JFrame {
         combo = new javax.swing.JComboBox<>();
         jtable = new javax.swing.JScrollPane();
         addexp = new javax.swing.JTable();
-        addexpbtn = new javax.swing.JButton();
-        tdisplay = new javax.swing.JLabel();
         net = new javax.swing.JButton();
         oebtn = new javax.swing.JButton();
-        total = new javax.swing.JLabel();
         clear = new javax.swing.JButton();
         jButton1 = new javax.swing.JButton();
+        info = new javax.swing.JLabel();
+        startdate = new com.toedter.calendar.JDateChooser();
+        enddate = new com.toedter.calendar.JDateChooser();
+        jButton2 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Performance");
@@ -428,11 +479,12 @@ public class Performance2 extends javax.swing.JFrame {
 
         jLabel1.setText("Sales Revenue:");
 
-        jLabel8.setForeground(new java.awt.Color(255, 0, 51));
+        jLabel8.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jLabel8.setForeground(new java.awt.Color(102, 0, 102));
         jLabel8.setText("Total Expenses:");
 
         totalExpenses.setEditable(false);
-        totalExpenses.setForeground(new java.awt.Color(255, 0, 51));
+        totalExpenses.setForeground(new java.awt.Color(102, 0, 102));
         totalExpenses.setText("0");
 
         jLabel9.setText("Retail Price Shiping:");
@@ -551,15 +603,6 @@ public class Performance2 extends javax.swing.JFrame {
         addexp.getTableHeader().setReorderingAllowed(false);
         jtable.setViewportView(addexp);
 
-        addexpbtn.setText("Add Expenses");
-        addexpbtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                addexpbtnActionPerformed(evt);
-            }
-        });
-
-        tdisplay.setText("Total:");
-
         net.setText("Net/Total Exp");
         net.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -574,8 +617,6 @@ public class Performance2 extends javax.swing.JFrame {
             }
         });
 
-        total.setText("0");
-
         clear.setText("Clear");
         clear.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -583,10 +624,29 @@ public class Performance2 extends javax.swing.JFrame {
             }
         });
 
-        jButton1.setText("Data From Beginning Of Time");
+        jButton1.setText("DFB");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
+            }
+        });
+
+        info.setFont(new java.awt.Font("Segoe Print", 1, 18)); // NOI18N
+        info.setForeground(new java.awt.Color(153, 0, 153));
+        info.setText("i");
+        info.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                infoMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                infoMouseExited(evt);
+            }
+        });
+
+        jButton2.setText("Get Performance");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
             }
         });
 
@@ -595,31 +655,30 @@ public class Performance2 extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap(374, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                    .addComponent(tdisplay, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                    .addComponent(total, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addComponent(jtable, javax.swing.GroupLayout.PREFERRED_SIZE, 283, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(addexpbtn)
-                                .addGap(8, 8, 8)))
-                        .addGap(87, 87, 87))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jButton1)
-                            .addComponent(clear, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(154, 154, 154))))
-            .addGroup(layout.createSequentialGroup()
                 .addGap(131, 131, 131)
                 .addComponent(net)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(oebtn)
                 .addGap(0, 0, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(351, 351, 351)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jtable, javax.swing.GroupLayout.PREFERRED_SIZE, 283, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(87, 87, 87))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(clear, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(info, javax.swing.GroupLayout.PREFERRED_SIZE, 18, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 175, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(startdate, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(enddate, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addContainerGap())))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
                     .addGap(11, 11, 11)
@@ -631,19 +690,24 @@ public class Performance2 extends javax.swing.JFrame {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jButton1)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(startdate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(9, 9, 9)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(info)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(enddate, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jButton2))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jButton1)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(clear, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 85, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 38, Short.MAX_VALUE)
                 .addComponent(jtable, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(tdisplay, javax.swing.GroupLayout.PREFERRED_SIZE, 11, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(total))
-                    .addComponent(addexpbtn, javax.swing.GroupLayout.Alignment.TRAILING))
-                .addGap(8, 8, 8)
+                .addGap(47, 47, 47)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(oebtn)
                     .addComponent(net))
@@ -749,51 +813,20 @@ public class Performance2 extends javax.swing.JFrame {
         }*/
     }//GEN-LAST:event_comboActionPerformed
 
-    private void addexpbtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addexpbtnActionPerformed
-       performance();
-       
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        /*DefaultTableModel model = (DefaultTableModel) addexp.getModel();
-        String name = "";
-        int cost =0;
-        try {
-             name = JOptionPane.showInputDialog("Enter Name");
-             cost  = Integer.parseInt(JOptionPane.showInputDialog("Enter Cost"));
-        }catch(Exception e) {
-            JOptionPane.showMessageDialog(null,"cost must be integer/numeric value");
-        }
-        
-        model.addRow(new Object[] {name,cost});
-        int rows = addexp.getRowCount();
-        int sum = 0;
-        for(int i=0;i<rows;i++) {
-            sum = sum + Integer.parseInt(addexp.getValueAt(i, 1).toString());
-        }
-        total.setText(Integer.toString(sum));*/
-    }//GEN-LAST:event_addexpbtnActionPerformed
-
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
         // TODO add your handling code here:
     }//GEN-LAST:event_formWindowOpened
 
     private void oebtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_oebtnActionPerformed
-       try {
-           int rp = Integer.parseInt(retailP.getText());
-       int sp = Integer.parseInt(sellingP.getText());
-       int mexp = Integer.parseInt(total.getText());
-       int te= rp+sp+mexp;
-       exp.setText(Integer.toString(te));
-       }catch(Exception e) {
-           JOptionPane.showMessageDialog(null,"please select month, to get expenses !");
-       }
+//       try {
+//           int rp = Integer.parseInt(retailP.getText());
+//       int sp = Integer.parseInt(sellingP.getText());
+//       int mexp = Integer.parseInt(total.getText());
+//       int te= rp+sp+mexp;
+//       exp.setText(Integer.toString(te));
+//       }catch(Exception e) {
+//           JOptionPane.showMessageDialog(null,"please select month, to get expenses !");
+//       }
     }//GEN-LAST:event_oebtnActionPerformed
 
     private void netActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_netActionPerformed
@@ -840,7 +873,39 @@ public class Performance2 extends javax.swing.JFrame {
     sellingPrices();
     gross_profit();
     totalE();
+    grp();
+    ttl();
+    
+    
+    
+    
+    
+    
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void infoMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_infoMouseEntered
+        info.setToolTipText("Click on CLEAR before any other Operation");
+    }//GEN-LAST:event_infoMouseEntered
+
+    private void infoMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_infoMouseExited
+        // TODO add your handling code here:
+    }//GEN-LAST:event_infoMouseExited
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        date = startdate.getDate();
+        sqldate = new java.sql.Date(date.getTime());
+        
+        date2 = enddate.getDate();
+        sqldate2 = new java.sql.Date(date2.getTime());
+        
+        helperClass object = new helperClass();
+        int sales = object.sales(sqldate, sqldate2);
+        int retail = object.retail(sqldate, sqldate2);
+        System.out.println("Total Sales: " + sales);
+        System.out.println("total retail: " + retail);
+        int g = object.grossProfit(sales, retail);
+        System.out.println("Gross: " + g);
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -879,12 +944,14 @@ public class Performance2 extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTable addexp;
-    private javax.swing.JButton addexpbtn;
     private javax.swing.JButton clear;
     private javax.swing.JComboBox<String> combo;
+    private com.toedter.calendar.JDateChooser enddate;
     private javax.swing.JTextField exp;
     private javax.swing.JTextField gprofit;
+    private javax.swing.JLabel info;
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
@@ -902,8 +969,7 @@ public class Performance2 extends javax.swing.JFrame {
     private javax.swing.JTextField sales;
     private javax.swing.JTextField sellingP;
     private javax.swing.JTextField sold;
-    private javax.swing.JLabel tdisplay;
-    private javax.swing.JLabel total;
+    private com.toedter.calendar.JDateChooser startdate;
     private javax.swing.JTextField totalExpenses;
     // End of variables declaration//GEN-END:variables
 }
