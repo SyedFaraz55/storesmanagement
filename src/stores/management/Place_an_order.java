@@ -51,6 +51,7 @@ public class Place_an_order extends javax.swing.JFrame {
     private ActionListener al;
     public Place_an_order() {
         initComponents();
+        
      al = new ActionListener() {
            public void actionPerformed(ActionEvent ae) {
                progress.setIndeterminate(true);
@@ -63,10 +64,10 @@ public class Place_an_order extends javax.swing.JFrame {
                    t.stop();
                    progress.setVisible(false);
                     ids();
-                   auctionstores();
+                    auctionstores();
                     paymethods();
                     addAccounts();
-                   
+                    records();
                }
            }
        };
@@ -74,8 +75,8 @@ public class Place_an_order extends javax.swing.JFrame {
        t.start();
     
     }
-    java.util.Date date,date2,date3,date4,date5,date6,dd;
-    java.sql.Date sqldate,sqldate2,sqldate3,sqldate4,sqldate5,sqldate6,extra;
+    java.util.Date date,date2,date3,date4,date5,date6,dd=null;
+    java.sql.Date sqldate,sqldate2,sqldate3,sqldate4,sqldate5,sqldate6,extra=null;
     
 {
     
@@ -86,7 +87,22 @@ public class Place_an_order extends javax.swing.JFrame {
     }
     
    
-    
+    public void records() {
+        try {
+            Connection con = (Connection) DriverManager.getConnection("jdbc:mysql://localhost/customerinfo","root","");
+            Statement st = con.createStatement();
+            ResultSet rs;
+            String sql = "SELECT COUNT(*) FROM `cust_info`";
+            rs = st.executeQuery(sql);
+            while(rs.next()) {
+                int rowCount = rs.getInt(1);
+            rec.setText(Integer.toString(rowCount));
+            }
+            
+        }catch(Exception e) {
+            JOptionPane.showMessageDialog(null,e.getMessage());
+        }
+    }
     
     private void fillTable(String sName) throws IOException {
         try {
@@ -420,12 +436,16 @@ public class Place_an_order extends javax.swing.JFrame {
         productid = new javax.swing.JTextField();
         imagePreview = new javax.swing.JLabel();
         getProduct = new javax.swing.JButton();
-        msg = new javax.swing.JLabel();
         jtable = new javax.swing.JScrollPane();
         addexp = new javax.swing.JTable();
         tdisplay = new javax.swing.JLabel();
         total = new javax.swing.JLabel();
         addexpbtn = new javax.swing.JButton();
+        jPanel6 = new javax.swing.JPanel();
+        msg = new javax.swing.JLabel();
+        jLabel29 = new javax.swing.JLabel();
+        jLabel30 = new javax.swing.JLabel();
+        rec = new javax.swing.JLabel();
         progress = new javax.swing.JProgressBar();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
@@ -438,6 +458,9 @@ public class Place_an_order extends javax.swing.JFrame {
                 formWindowOpened(evt);
             }
         });
+        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        getContentPane().add(jLabel24, new org.netbeans.lib.awtextra.AbsoluteConstraints(689, 283, -1, -1));
+        getContentPane().add(jLabel26, new org.netbeans.lib.awtextra.AbsoluteConstraints(689, 283, -1, -1));
 
         jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder("Customer Information"));
 
@@ -613,6 +636,8 @@ public class Place_an_order extends javax.swing.JFrame {
                 .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
+
+        getContentPane().add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 27, -1, -1));
 
         jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder("Item Information"));
 
@@ -977,11 +1002,16 @@ public class Place_an_order extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
+        getContentPane().add(jPanel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 289, 880, 389));
+
         jLabel27.setText("Product Id:");
+        getContentPane().add(jLabel27, new org.netbeans.lib.awtextra.AbsoluteConstraints(594, 31, -1, -1));
+        getContentPane().add(productid, new org.netbeans.lib.awtextra.AbsoluteConstraints(666, 28, 160, -1));
 
         imagePreview.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         imagePreview.setText("Image");
         imagePreview.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        getContentPane().add(imagePreview, new org.netbeans.lib.awtextra.AbsoluteConstraints(666, 96, 192, 181));
 
         getProduct.setText("Get Product");
         getProduct.addActionListener(new java.awt.event.ActionListener() {
@@ -989,6 +1019,7 @@ public class Place_an_order extends javax.swing.JFrame {
                 getProductActionPerformed(evt);
             }
         });
+        getContentPane().add(getProduct, new org.netbeans.lib.awtextra.AbsoluteConstraints(836, 27, -1, -1));
 
         addexp.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -1002,9 +1033,13 @@ public class Place_an_order extends javax.swing.JFrame {
         addexp.getTableHeader().setReorderingAllowed(false);
         jtable.setViewportView(addexp);
 
+        getContentPane().add(jtable, new org.netbeans.lib.awtextra.AbsoluteConstraints(876, 83, 283, 174));
+
         tdisplay.setText("Total:");
+        getContentPane().add(tdisplay, new org.netbeans.lib.awtextra.AbsoluteConstraints(876, 265, 42, 11));
 
         total.setText("0");
+        getContentPane().add(total, new org.netbeans.lib.awtextra.AbsoluteConstraints(924, 263, 80, -1));
 
         addexpbtn.setText("Add Expenses");
         addexpbtn.addActionListener(new java.awt.event.ActionListener() {
@@ -1012,94 +1047,48 @@ public class Place_an_order extends javax.swing.JFrame {
                 addexpbtnActionPerformed(evt);
             }
         });
+        getContentPane().add(addexpbtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(1058, 289, -1, -1));
+
+        jPanel6.setBorder(javax.swing.BorderFactory.createTitledBorder("Status"));
+
+        jLabel29.setText("Status:");
+
+        jLabel30.setText("Records:");
+
+        javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
+        jPanel6.setLayout(jPanel6Layout);
+        jPanel6Layout.setHorizontalGroup(
+            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel6Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel29)
+                    .addComponent(jLabel30))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(msg, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(rec, javax.swing.GroupLayout.DEFAULT_SIZE, 117, Short.MAX_VALUE))
+                .addGap(25, 25, 25))
+        );
+        jPanel6Layout.setVerticalGroup(
+            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel6Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(msg, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel29))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jLabel30)
+                    .addComponent(rec, javax.swing.GroupLayout.DEFAULT_SIZE, 21, Short.MAX_VALUE))
+                .addContainerGap(13, Short.MAX_VALUE))
+        );
+
+        getContentPane().add(jPanel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(924, 482, 200, 100));
 
         progress.setString("Please Wait....");
         progress.setStringPainted(true);
-
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(113, 113, 113)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel24)
-                                    .addComponent(jLabel26))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(addexpbtn))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(18, 18, 18)
-                                .addComponent(jLabel27)
-                                .addGap(18, 18, 18)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(productid, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(getProduct))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(imagePreview, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(18, 18, 18)
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addGroup(layout.createSequentialGroup()
-                                                .addComponent(tdisplay, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(total, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                            .addComponent(jtable, javax.swing.GroupLayout.PREFERRED_SIZE, 283, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                                .addGap(0, 0, Short.MAX_VALUE))))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(133, 133, 133)
-                                .addComponent(progress, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(msg, javax.swing.GroupLayout.PREFERRED_SIZE, 213, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                .addContainerGap())
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(27, 27, 27)
-                        .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(27, 27, 27)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel27)
-                            .addComponent(productid, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(getProduct))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(imagePreview, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jtable, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(tdisplay, javax.swing.GroupLayout.PREFERRED_SIZE, 11, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(total))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel24)
-                    .addComponent(jLabel26))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, 389, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(addexpbtn)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(msg, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(41, 41, 41)
-                        .addComponent(progress, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(32, 32, 32))))
-        );
+        getContentPane().add(progress, new org.netbeans.lib.awtextra.AbsoluteConstraints(1020, 670, -1, -1));
 
         pack();
         setLocationRelativeTo(null);
@@ -1137,7 +1126,7 @@ public class Place_an_order extends javax.swing.JFrame {
           clearFields();
       }
       }catch(Exception e) {
-       JOptionPane.showMessageDialog(null,"All fields are required to save...");
+       JOptionPane.showMessageDialog(null,"All Fields are required");
       }
         
 
@@ -1324,8 +1313,8 @@ public class Place_an_order extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null,"Please select date of order first");
         } else {
             int te = Integer.parseInt(total.getText());
-        name = JOptionPane.showInputDialog("Enter Name");
-        cost  = Integer.parseInt(JOptionPane.showInputDialog("Enter Cost"));
+                    name = JOptionPane.showInputDialog("Enter Name");
+                 cost  = Integer.parseInt(JOptionPane.showInputDialog("Enter Cost"));
             try {
                 Connection con  = (Connection) DriverManager.getConnection("jdbc:mysql://localhost/customerinfo", "root", "");
                 Statement st = con.createStatement();
@@ -1333,7 +1322,7 @@ public class Place_an_order extends javax.swing.JFrame {
                 Date v = dateoforder.getDate();
                 String mysql = "INSERT INTO `customerinfo`.`other_expenses` (`dateoforder`,`expenses name`,`cost`,`total expense`) VALUES ('"+ extra +"','"+ name +"','"+ cost +"','"+ te +"')";
                 st.executeUpdate(mysql);
-                JOptionPane.showMessageDialog(null,"Saved...");
+                
             }catch(Exception e) {
                 JOptionPane.showMessageDialog(null,e.getMessage());
         }
@@ -1428,7 +1417,9 @@ public class Place_an_order extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel26;
     private javax.swing.JLabel jLabel27;
     private javax.swing.JLabel jLabel28;
+    private javax.swing.JLabel jLabel29;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel30;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
@@ -1440,6 +1431,7 @@ public class Place_an_order extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
+    private javax.swing.JPanel jPanel6;
     private javax.swing.JComboBox<String> jcombo1;
     private javax.swing.JScrollPane jtable;
     private javax.swing.JComboBox<String> mop;
@@ -1454,6 +1446,7 @@ public class Place_an_order extends javax.swing.JFrame {
     private javax.swing.JTextField postalcode;
     private javax.swing.JTextField productid;
     private javax.swing.JProgressBar progress;
+    private javax.swing.JLabel rec;
     private javax.swing.JTextField retailP;
     private javax.swing.JTextField rps;
     private javax.swing.JTextField sp;
